@@ -1,0 +1,219 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand:wght@400..700&display=swap");
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.time-rem {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #000000 #f7e2e2;
+  scrollbar-arrow-color: black;
+}
+
+.login-logo {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: change-background 1s infinite;
+}
+
+@keyframes change-background {
+  0% {
+    background-image: linear-gradient(
+      135deg,
+      #ff0000,
+      #ff8000,
+      #c8ff00,
+      #8cff00,
+      #09ff00,
+      #00ffff,
+      #0073ff,
+      #1e00ff,
+      #dd00ff,
+      #ff0037
+    );
+  }
+  10% {
+    background-image: linear-gradient(
+      135deg,
+      #ff0037,
+      #ff0000,
+      #ff8000,
+      #c8ff00,
+      #8cff00,
+      #09ff00,
+      #00ffff,
+      #0073ff,
+      #1e00ff,
+      #dd00ff
+    );
+  }
+  20% {
+    background-image: linear-gradient(
+      135deg,
+      #dd00ff,
+      #ff0037,
+      #ff0000,
+      #ff8000,
+      #c8ff00,
+      #8cff00,
+      #09ff00,
+      #00ffff,
+      #0073ff,
+      #1e00ff
+    );
+  }
+  30% {
+    background-image: linear-gradient(
+      135deg,
+      #1e00ff,
+      #dd00ff,
+      #ff0037,
+      #ff0000,
+      #ff8000,
+      #c8ff00,
+      #8cff00,
+      #09ff00,
+      #00ffff,
+      #0073ff
+    );
+  }
+  40% {
+    background-image: linear-gradient(
+      135deg,
+      #0073ff,
+      #1e00ff,
+      #dd00ff,
+      #ff0037,
+      #ff0000,
+      #ff8000,
+      #c8ff00,
+      #8cff00,
+      #09ff00,
+      #00ffff
+    );
+  }
+  50% {
+    background-image: linear-gradient(
+      135deg,
+      #00ffff,
+      #0073ff,
+      #1e00ff,
+      #dd00ff,
+      #ff0037,
+      #ff0000,
+      #ff8000,
+      #c8ff00,
+      #8cff00,
+      #09ff00
+    );
+  }
+  60% {
+    background-image: linear-gradient(
+      135deg,
+      #09ff00,
+      #00ffff,
+      #0073ff,
+      #1e00ff,
+      #dd00ff,
+      #ff0037,
+      #ff0000,
+      #ff8000,
+      #c8ff00,
+      #8cff00
+    );
+  }
+  70% {
+    background-image: linear-gradient(
+      135deg,
+      #8cff00,
+      #09ff00,
+      #00ffff,
+      #0073ff,
+      #1e00ff,
+      #dd00ff,
+      #ff0037,
+      #ff0000,
+      #ff8000,
+      #c8ff00
+    );
+  }
+  80% {
+    background-image: linear-gradient(
+      135deg,
+      #c8ff00,
+      #8cff00,
+      #09ff00,
+      #00ffff,
+      #0073ff,
+      #1e00ff,
+      #dd00ff,
+      #ff0037,
+      #ff0000,
+      #ff8000
+    );
+  }
+  90% {
+    background-image: linear-gradient(
+      135deg,
+      #ff8000,
+      #c8ff00,
+      #8cff00,
+      #09ff00,
+      #00ffff,
+      #0073ff,
+      #1e00ff,
+      #dd00ff,
+      #ff0037,
+      #ff0000
+    );
+  }
+  100% {
+    background-image: linear-gradient(
+      135deg,
+      #ff0000,
+      #ff8000,
+      #c8ff00,
+      #8cff00,
+      #09ff00,
+      #00ffff,
+      #0073ff,
+      #1e00ff,
+      #dd00ff,
+      #ff0037
+    );
+  }
+}
+
+.progress-3 {
+  width: 120px;
+  height: 20px;
+  border-radius: 20px;
+  background: repeating-linear-gradient(135deg, #f03355 0 10px, #ffa516 0 20px)
+      0/0% no-repeat,
+    repeating-linear-gradient(135deg, #ddd 0 10px, #eee 0 20px) 0/100%;
+  animation: p3 1.5s infinite;
+}
+@keyframes p3 {
+  100% {
+    background-size: 100%;
+  }
+}
