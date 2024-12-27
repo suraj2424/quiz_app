@@ -28,6 +28,10 @@ const AttemptSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  totalScore: {
+    type: Number,
+    required: true
+  },
   startTime: {
     type: Date,
     default: Date.now

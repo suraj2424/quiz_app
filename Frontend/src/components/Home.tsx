@@ -139,8 +139,8 @@ export default function Home() {
     <div className="min-h-screen selection:bg-cyan-600 selection:text-white">
       <header className="h-16 px-10 py-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-sky-600">
-            QuizMaster
+          <h1 className="text-xl font-bold  font-openSans ">
+            Quizin'
           </h1>
           <nav className="font-semibold">
             {userData ? (
@@ -157,7 +157,7 @@ export default function Home() {
                   <FaUserLarge />
                   <span
                     onClick={() => setUserToggle(!userToggle)}
-                    className="cursor-pointer"
+                    className="cursor-pointer transition-all"
                   >
                     {userData.name}
                   </span>
@@ -165,25 +165,25 @@ export default function Home() {
                     <div className="absolute border border-gray-300 top-10 right-2 rounded-lg space-y-4 bg-white shadow-lg w-56 px-6 py-6">
                       <Link
                         to={`/profile/${userData.id}`}
-                        className="hover:text-gray-500 transition-all flex items-center justify-between"
+                        className="hover:text-purple-500 transition-all flex items-center justify-between ease-in-out duration-100"
                       >
                         Profile <FaUserLarge />
                       </Link>
                       <Link
                         to={`/history/${userData.id}`}
-                        className="hover:text-gray-500 transition-all flex items-center justify-between"
+                        className="hover:text-purple-500 transition-all flex items-center justify-between ease-in-out duration-100"
                       >
                         History <FaHistory />
                       </Link>
                       <Link
                         to={`/dashboard/${userData.id}`}
-                        className="hover:text-gray-500 transition-all ease-in-out flex items-center justify-between"
+                        className="hover:text-purple-500 transition-all ease-in-out flex items-center justify-between duration-100"
                       >
-                        Leaderboard <MdLeaderboard />
+                        Dashboard <MdLeaderboard />
                       </Link>
                       <button
                         onClick={handleLogOut}
-                        className="hover:text-red-600 transition-all ease-in-out flex items-center justify-between gap-4"
+                        className="hover:text-red-600 transition-all ease-in-out flex items-center justify-between gap-4 duration-100"
                       >
                         Logout <IoExitOutline />
                       </button>

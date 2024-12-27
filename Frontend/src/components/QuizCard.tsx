@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Cookies } from 'react-cookie';
+import React, { useState } from "react";
+import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 interface QuizCardProps {
@@ -11,7 +11,7 @@ interface QuizCardProps {
     tags: string[];
     createdBy: {
       name?: string;
-    }
+    };
   };
 }
 
@@ -21,7 +21,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const cookies = new Cookies();
-  const token = cookies.get('token');
+  const token = cookies.get("token");
   const handleStartQuiz = async () => {
     try {
       if (!token) {
@@ -30,12 +30,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
       }
 
       // Verify token with backend
-      const response = await fetch('http://localhost:5000/api/verify-token', {
-        method: 'GET',
+      const response = await fetch("http://localhost:5000/api/verify-token", {
+        method: "GET",
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
@@ -54,58 +54,68 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
   };
 
   const handleLogin = () => {
-    navigate('/login?type=student', { state: { returnUrl: `/quiz/id=${quiz._id}` } });
+    navigate("/login?type=student", {
+      state: { returnUrl: `/quiz/id=${quiz._id}` },
+    });
   };
 
   const handleRegister = () => {
-    navigate('/register?type=student', { state: { returnUrl: `/quiz/id=${quiz._id}` } });
+    navigate("/register?type=student", {
+      state: { returnUrl: `/quiz/id=${quiz._id}` },
+    });
   };
 
   return (
     <div className="relative">
       {/* Quiz Card */}
-      <div className="bg-slate-50 border-2 border-gray-300 rounded-md bg-opacity-30 p-6 transition-all duration-300 hover:bg-slate-50 hover:border-2 hover:border-violet-300">
-        <div className='flex items-center justify-between'>
-        <h3 className="text-lg font-semibold mb-1">{quiz.title}</h3>
-        <p
-          className={`mb-2 p-0 justify-center flex items-center rounded text-sm font-semibold ${
-            quiz.difficulty === "EASY"
-              ? "text-green-700 bg-green-300 w-11"
-              : quiz.difficulty === "MEDIUM"
-              ? "text-yellow-700 bg-yellow-300 w-16"
-              : "text-red-700 bg-red-300 w-10"
-          }`}
-        >
-          {quiz.difficulty}
-        </p>
-        </div>
-        <div className="flex gap-2 mb-2">
-          {quiz.tags.map((tag, index) => (
-            <span
-              key={index}
-              className="bg-gray-100 border border-gray-300 text-gray-700 text-xs font-bold px-2 py-1 rounded"
+      <div className="bg-white border border-gray-300 rounded bg-opacity-30 p-2 transition-all duration-300 hover:bg-slate-50">
+        <div className="p-2">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold mb-1">{quiz.title}</h3>
+            <p
+              className={`mb-2 p-0 justify-center flex items-center border text-sm font-semibold font-roboto tracking-wider ${
+                quiz.difficulty === "EASY"
+                  ? "text-green-700 bg-green-300 border-green-600 w-11"
+                  : quiz.difficulty === "MEDIUM"
+                  ? "text-yellow-700 bg-yellow-300 border-yellow-500 w-[70px]"
+                  : "text-red-700 bg-red-300 border-red-600 w-10"
+              }`}
             >
-              {tag.toUpperCase()}
-            </span>
-          ))}
-        </div>
-        <p className="text-gray-500 font-semibold text-sm">
-          {quiz.questionCount} Questions
-        </p>
-        <div className="flex justify-between mt-4">
-          <div>
-            <p className="text-xs font-semibold text-purple-700">Created by</p>
-            <div className="flex items-center gap-2 mt-2">
-              <p className='text-xs font-bold text-gray-500'>{quiz.createdBy.name}</p>
-            </div>
+              {quiz.difficulty}
+            </p>
           </div>
-          <div>
-            <button 
-              className="border-gray-300 bg-gray-50 border text-black hover:bg-slate-700 hover:text-white font-bold py-2 px-4 rounded transition-all ease-in-out duration-300"
-              onClick={handleStartQuiz}
-            >
-              Start Quiz
-            </button>
+          <div className="flex gap-2 mb-2">
+            {quiz.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-gray-100 border border-gray-300 text-gray-700 text-xs font-bold px-2 py-1 rounded"
+              >
+                {tag.toUpperCase()}
+              </span>
+            ))}
+          </div>
+          <p className="text-gray-500 font-semibold text-sm">
+            {quiz.questionCount} Questions
+          </p>
+          <div className="flex justify-between mt-4">
+            <div>
+              <p className="text-xs font-semibold text-purple-700">
+                Created by
+              </p>
+              <div className="flex items-center gap-2 mt-2">
+                <p className="text-xs font-semibold text-gray-400">
+                  {quiz.createdBy.name}
+                </p>
+              </div>
+            </div>
+            <div>
+              <button
+                className="border-gray-300 bg-gray-50 border text-black hover:bg-slate-700 hover:text-white font-bold py-2 px-4 rounded transition-all ease-in-out duration-300"
+                onClick={handleStartQuiz}
+              >
+                Start Quiz
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -114,7 +124,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
       {showError && (
         <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded relative">
           <span className="block sm:inline">{errorMessage}</span>
-          <button 
+          <button
             onClick={() => setShowError(false)}
             className="absolute top-0 bottom-0 right-0 px-4 py-3"
           >
@@ -128,7 +138,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
             <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Authentication Required</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Authentication Required
+              </h3>
               <p className="text-sm text-gray-500 mt-2">
                 Please login or register to start the quiz.
               </p>

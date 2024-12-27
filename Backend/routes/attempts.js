@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const Attempt = require("../models/attemptsSchema");
 const { authenticate } = require("../services/authentication");
+const { Quiz } = require("../models/quizSchema");
 
 // POST /api/attempts - Save new attempt
 router.post("/", authenticate, async (req, res) => {
@@ -29,6 +30,7 @@ router.post("/", authenticate, async (req, res) => {
       completed: req.body.completed || false,
       startTime: req.body.startTime,
       endTime: req.body.endTime,
+      totalScore: req.body.totalScore,
     });
 
     const savedAttempt = await attempt.save();
@@ -66,9 +68,8 @@ router.post("/", authenticate, async (req, res) => {
 
 router.get('/user/quizzes', authenticate, async (req, res) => {
   try {
-    // Fetch all attempts for the logged-in user
     const attempts = await Attempt.find({ user: req.user.id })
-      .populate('quiz', 'title') // Populate quiz details
+      .populate('quiz', 'title')
       .sort({ endTime: -1 });
 
     // Group attempts by quiz
@@ -79,86 +80,104 @@ router.get('/user/quizzes', authenticate, async (req, res) => {
         acc[quizId] = {
           quizId,
           quizTitle: attempt.quiz.title,
-          attempts: []
+          attempts: [],
+          stats: {
+            totalAttempts: 0,
+            highestScore: 0,
+            averageScore: 0,
+            totalTimeSpent: 0
+          }
         };
       }
 
+      // Add attempt
       acc[quizId].attempts.push({
         attemptId: attempt._id,
         score: attempt.score,
-        maxScore: attempt.maxScore,
-        startTime: attempt.startTime.toISOString(),
-        endTime: attempt.endTime.toISOString(),
-        timeSpent: attempt.timeSpent
+        totalQuestions: attempt.totalQuestions,
+        timeSpent: attempt.timeSpent,
+        startTime: attempt.startTime,
+        endTime: attempt.endTime,
+        completed: attempt.completed,
+        totalScore: attempt.totalScore,
+        percentage: (attempt.score / attempt.totalScore) * 100
       });
+
+      // Update stats
+      const stats = acc[quizId].stats;
+      stats.totalAttempts++;
+      stats.totalTimeSpent += attempt.timeSpent || 0;
+      stats.highestScore = Math.max(stats.highestScore, (attempt.score / attempt.totalScore) * 100);
+      stats.averageScore = acc[quizId].attempts.reduce((sum, att) => 
+        sum + (att.score / att.totalScore) * 100, 0) / stats.totalAttempts;
 
       return acc;
     }, {});
 
-    // Convert map to array and calculate statistics
-    const quizAttempts = Object.values(quizAttemptsMap).map(quizData => {
-      const scores = quizData.attempts.map(a => a.score);
-      
-      return {
-        ...quizData,
-        stats: {
-          totalAttempts: quizData.attempts.length,
-          highestScore: Math.max(...scores),
-          averageScore: scores.reduce((a, b) => a + b, 0) / scores.length,
-          totalTimeSpent: quizData.attempts.reduce((sum, a) => sum + a.timeSpent, 0),
-          latestAttempt: quizData.attempts[0] // Already sorted by endTime
-        }
-      };
-    });
+    // Convert map to array
+    const groupedAttempts = Object.values(quizAttemptsMap);
 
-    res.json(quizAttempts);
-
-  } catch (error) {
-    console.error('Error fetching quiz attempts:', error);
-    res.status(500).json({ 
-      message: 'Error fetching attempts',
-      error: error.message 
-    });
-  }
-});
-
-// GET /api/attempts/:userId/:quizId - Get attempts for specific quiz
-router.get('/user/quiz/:quizId', authenticate, async (req, res) => {
-  try {
-    const attempts = await Attempt.find({
-      user: req.user.id,
-      quiz: req.params.quizId
-    })
-    .populate('quiz', 'title')
-    .sort({ endTime: -1 });
-
-    if (!attempts.length) {
-      return res.status(404).json({
-        success: false,
-        message: 'No attempts found for this quiz'
-      });
-    }
-
-    const quizDetails = {
-      quizId: attempts[0].quiz._id,
-      quizTitle: attempts[0].quiz.title,
-      attempts: attempts.map(attempt => ({
-        attemptId: attempt._id,
-        score: attempt.score,
-        maxScore: attempt.maxScore,
-        startTime: attempt.startTime.toISOString(),
-        endTime: attempt.endTime.toISOString(),
-        timeSpent: attempt.timeSpent
-      }))
-    };
-
-    res.json(quizDetails);
+    res.json(groupedAttempts);
 
   } catch (error) {
     console.error('Error fetching quiz attempts:', error);
     res.status(500).json({
-      success: false,
+      success: false, 
       error: 'Error fetching attempts'
+    });
+  }
+});
+
+router.get('/:id/summary', authenticate, async (req, res) => {
+  try {
+    const attempt = await Attempt.findById(req.params.id)
+      .populate('quiz');  // Make sure to populate quiz
+
+    if (!attempt) {
+      return res.status(404).json({
+        success: false,
+        error: 'Attempt not found'
+      });
+    }
+
+    const quiz = attempt.quiz;
+
+    // Calculate summary statistics
+    const summary = {
+      attemptId: attempt._id,
+      quizTitle: quiz.title,
+      score: attempt.score,
+      totalScore: attempt.totalScore,
+      timeSpent: attempt.timeSpent,
+      startTime: attempt.startTime,
+      endTime: attempt.endTime,
+      questions: quiz.questions.map(q => ({
+        questionText: q.questionText,
+        userAnswer: attempt.answers.find(a => a.questionId.toString() === q._id.toString())?.selectedOption || 'Not answered',
+        correctAnswer: q.correctAnswer || q.options.find(opt => opt.isCorrect)?.optionText,
+        isCorrect: attempt.answers.find(a => a.questionId.toString() === q._id.toString())?.isCorrect || false,
+        points: q.points,
+        earnedPoints: attempt.answers.find(a => a.questionId.toString() === q._id.toString())?.isCorrect ? q.points : 0,
+        explanation: q.answerExplanation
+      })),
+      statistics: {
+        totalQuestions: attempt.totalQuestions,
+        correctAnswers: attempt.answers.filter(a => a.isCorrect).length,
+        incorrectAnswers: attempt.answers.filter(a => !a.isCorrect).length,
+        accuracy: ((attempt.score / attempt.totalScore) * 100) || 0
+      }
+    };
+
+    res.json({
+      success: true,
+      data: summary
+    });
+
+  } catch (error) {
+    console.error('Error fetching attempt summary:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error fetching attempt summary'
     });
   }
 });

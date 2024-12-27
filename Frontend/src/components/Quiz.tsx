@@ -41,6 +41,7 @@ interface Quiz {
   category: string;
   questions: Question[];
   status: "Draft" | "Published" | "Archived";
+  totalScore: number;
 }
 
 interface AnsweredQuestion {
@@ -122,6 +123,7 @@ export default function Quiz() {
           timeLimit: data.timeLimit * 60,
         };
         setQuiz(modifiedData);
+        console.log(modifiedData);
         // make time * 60
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -336,7 +338,8 @@ export default function Quiz() {
         timeSpent: timeSpentInSeconds,
         completed: true,
         startTime: startTime.toISOString(),
-        endTime: endTime.toISOString()
+        endTime: endTime.toISOString(),
+        totalScore: quiz.totalScore
       };
 
       console.log('Submitting attempt data:', attemptData); // Debug log
@@ -534,7 +537,7 @@ export default function Quiz() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 space-y-6">
+          <div className="max-w-2xl w-full bg-white rounded-xl shadow-xl p-8 space-y-6">
             {/* Header Section */}
             <div className="text-center space-y-4">
               <h1 className="text-4xl py-2 font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
@@ -614,52 +617,73 @@ export default function Quiz() {
 
       {/* Quiz Screen */}
       {quizStarted && (
-        <div className="w-full min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-4 px-4 md:px-20 flex-col flex items-center justify-center relative">
+        <div className="w-full h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex-col flex">
           <WatermarkBackground />
           {/* Header */}
-          <header className="w-full p-4 bg-white/80 backdrop-blur-sm border-t border-l border-r border-purple-100 mb-2 rounded-lg shadow-lg">
-            <div className="flex flex-col sm:flex-row justify-between items-center">
-              <div className="mb-2 sm:mb-0 text-center sm:text-left">
-                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  {quiz.title}
-                </h1>
-                <h2 className="text-base font-medium text-slate-600 sm:text-sm mt-2">
-                  Difficulty:
-                  <span
-                    className={`font-bold ml-2 px-3 py-1 rounded-full text-white ${
-                      quiz.difficulty === "EASY"
-                        ? "bg-gradient-to-r from-green-400 to-green-500"
-                        : quiz.difficulty === "MEDIUM"
-                        ? "bg-gradient-to-r from-yellow-400 to-orange-400"
-                        : "bg-gradient-to-r from-red-400 to-red-500"
-                    }`}
-                  >
-                    {quiz.difficulty}
-                  </span>
-                </h2>
-              </div>
-              <div className="flex items-center space-x-6">
-                <div>
-                  <TimerAnimation
-                    totalTime={quiz.timeLimit}
-                    timeElapsed={timeElapsed}
-                  />
-                </div>
-                <button
-                  onClick={handleExit}
-                  className="text-red-500 hover:text-red-600 transition-all duration-300 transform hover:scale-110"
-                  aria-label="Exit quiz"
-                >
-                  <ImExit className="text-2xl sm:text-3xl" />
-                </button>
-              </div>
-            </div>
-          </header>
+          <header className="w-full bg-white/80 backdrop-blur-sm border-b border-purple-100 shadow-lg h-16 fixed top-0 left-0 z-50">
+      <div className="flex justify-between items-center h-full px-4">
+        <div className="flex items-center">
+          <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            {quiz.title}
+          </h1>
+          <span className={`ml-4 px-3 py-1 rounded-full text-white text-sm ${
+            quiz.difficulty === "EASY"
+              ? "bg-gradient-to-r from-green-400 to-green-500"
+              : quiz.difficulty === "MEDIUM"
+              ? "bg-gradient-to-r from-yellow-400 to-orange-400"
+              : "bg-gradient-to-r from-red-400 to-red-500"
+          }`}>
+            {quiz.difficulty}
+          </span>
+        </div>
+        <div className="flex items-center space-x-6">
+          <TimerAnimation totalTime={quiz.timeLimit} timeElapsed={timeElapsed} />
+          <button onClick={handleExit} className="text-red-500 hover:text-red-600">
+            <ImExit className="text-2xl" />
+          </button>
+        </div>
+      </div>
+    </header>
 
-          {/* Main content */}
-          <main className="w-full flex flex-col md:flex-row gap-6">
-            {/* Question section */}
-            <section className="w-full md:w-3/4 bg-white/80 backdrop-blur-sm border border-purple-100 rounded-lg p-6 shadow-lg">
+    <div className="flex flex-1 pt-16">
+
+    <nav className="w-64 bg-white/80 backdrop-blur-sm border-r border-purple-100 h-[calc(100vh-4rem)] fixed left-0 overflow-y-auto">
+        <div className="p-4">
+          <h3 className="text-lg font-bold text-purple-800 mb-4">Questions</h3>
+          <div className="space-y-2">
+            {quiz.questions.map((question, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentQuestion(index)}
+                className={`w-full text-left p-3 rounded-lg transition-all ${
+                  currentQuestion === index
+                    ? "bg-gradient-to-r from-purple-100 to-pink-100 border-purple-200"
+                    : "hover:bg-gray-50"
+                } ${
+                  answeredQuestions.find((q) => q.questionIndex === index)
+                    ? "border-l-4 border-green-500"
+                    : ""
+                }`}
+              >
+                <div className="flex items-center">
+                  <span className="w-8 h-8 flex items-center justify-center rounded-full bg-purple-50 mr-3">
+                    {index + 1}
+                  </span>
+                  <span className="text-sm truncate">
+                    {question.questionText.substring(0, 30)}...
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      {/* Main content */}
+      <main className="flex-1 ml-64 p-6 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+        <div className="max-w-4xl mx-auto">
+          {/* Question Content */}
+          <section className="bg-white/80 backdrop-blur-sm border border-purple-100 rounded-lg p-6 shadow-lg">
               <div className="mb-6 flex justify-between items-center bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-100">
                 <h3 className="text-xl font-bold text-purple-800">
                   Question {currentQuestion + 1}
@@ -781,45 +805,22 @@ export default function Quiz() {
               </div>
             </section>
 
-            {/* Progress section */}
-            <section className="w-full md:w-1/4 bg-white/80 backdrop-blur-sm border border-purple-100 rounded-lg p-6 shadow-lg">
-              <h3 className="text-lg font-bold text-purple-800 mb-3">
-                Progress
-              </h3>
-              <div className="w-full bg-gray-100 rounded-full h-3 mb-6">
-                <div
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all duration-300"
-                  style={{
-                    width: `${
-                      (answeredQuestions.length / quiz.questions.length) * 100
-                    }%`,
-                  }}
-                ></div>
-              </div>
-              <h3 className="text-lg font-bold text-purple-800 mb-3">
-                Question Overview
-              </h3>
-              <div className="grid grid-cols-5 gap-3 p-4 border border-purple-100 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50">
-                {quiz.questions.map((_, index) => (
-                  <button
-                    key={index}
-                    className={`w-10 h-10 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-110 ${
-                      answeredQuestions.find((q) => q.questionIndex === index)
-                        ? "bg-gradient-to-r from-green-400 to-green-500 text-white shadow-md"
-                        : index === currentQuestion
-                        ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md"
-                        : "bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
-                    }`}
-                    onClick={() => setCurrentQuestion(index)}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </div>
-            </section>
-          </main>
+          {/* Progress bar at the bottom */}
+          <div className="fixed bottom-0 left-64 right-0 h-2 bg-gray-100">
+            <div
+              className="bg-gradient-to-r from-purple-500 to-pink-500 h-full transition-all duration-300"
+              style={{
+                width: `${(answeredQuestions.length / quiz.questions.length) * 100}%`,
+              }}
+            />
+          </div>
         </div>
+      </main>
+      </div>
+      </div>
       )}
+
+
 
       {/* Score Screen */}
       {showScore === true && quizStarted === false && !reviewMode && (
