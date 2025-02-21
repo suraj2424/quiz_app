@@ -497,6 +497,8 @@ export default function Quiz() {
     }
   };
 
+
+
   const handleHintClick = () => {
     setHintClicked(true);
   };
@@ -526,81 +528,169 @@ export default function Quiz() {
     setQuiz({ ...quiz, questions: updatedQuestions });
   };
 
+  const InfoCard = ({ icon, label, value, theme }) => {
+    const getThemeStyles = (theme) => {
+      const baseStyles = "rounded-xl p-4 backdrop-blur-lg transition-all duration-300 hover:shadow-lg";
+      switch (theme) {
+        case "success":
+          return `${baseStyles} bg-green-50/50 text-green-600 hover:bg-green-50/80`;
+        case "warning":
+          return `${baseStyles} bg-amber-50/50 text-amber-600 hover:bg-amber-50/80`;
+        case "danger":
+          return `${baseStyles} bg-rose-50/50 text-rose-600 hover:bg-rose-50/80`;
+        case "primary":
+          return `${baseStyles} bg-indigo-50/50 text-indigo-600 hover:bg-indigo-50/80`;
+        case "secondary":
+          return `${baseStyles} bg-purple-50/50 text-purple-600 hover:bg-purple-50/80`;
+        default:
+          return baseStyles;
+      }
+    };
+  
+    return (
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          show: { opacity: 1, y: 0 }
+        }}
+        className={getThemeStyles(theme)}
+      >
+        <div className="flex items-center gap-3">
+          {icon}
+          <div>
+            <p className="text-sm opacity-70">{label}</p>
+            <p className="font-semibold">{value}</p>
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
+
   return (
     <div className="relative">
       {/* Welcome Screen */}
       {quizStarted === false && showScore === false && (
         <motion.div
-          className="w-screen h-screen bg-gradient-to-br from-blue-50 to-indigo-50 grid place-items-center p-4"
-          key="welcome"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+        className="min-h-screen w-full bg-gradient-to-br from-purple-50 via-indigo-50 to-pink-50 
+                   flex items-center justify-center p-4 sm:p-6 md:p-8 relative overflow-hidden"
+        key="welcome"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        {/* Animated background elements */}
+        <div className="absolute inset-0 -z-10">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.2, 0.3],
+            }}
+            transition={{ duration: 8, repeat: Infinity }}
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-300 rounded-full 
+                       mix-blend-multiply filter blur-3xl opacity-30"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.2, 0.3, 0.2],
+            }}
+            transition={{ duration: 6, repeat: Infinity }}
+            className="absolute top-1/3 right-1/4 w-96 h-96 bg-indigo-300 rounded-full 
+                       mix-blend-multiply filter blur-3xl opacity-20"
+          />
+        </div>
+      
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl w-full backdrop-blur-lg bg-white/80 rounded-2xl shadow-2xl 
+                     shadow-purple-500/10 p-6 sm:p-8 md:p-10 space-y-8"
         >
-          <div className="max-w-2xl w-full bg-white rounded-xl shadow-xl p-8 space-y-6">
-            {/* Header Section */}
-            <div className="text-center space-y-4">
-              <h1 className="text-4xl py-2 font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          {/* Header Section */}
+          <motion.div 
+            className="text-center space-y-4"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r 
+                              from-purple-600 via-indigo-600 to-pink-600">
                 {quiz.title}
-              </h1>
-              <p className="text-lg text-gray-600 font-medium">
-                {quiz.description}
-              </p>
-            </div>
-
-            {/* Info Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-6">
-              <div className="bg-blue-50 rounded-xl p-4 flex items-center space-x-3">
-                <IoBarChartOutline className="w-6 h-6 text-blue-600" />
-                <div>
-                  <p className="text-sm text-gray-500">Difficulty</p>
-                  <p
-                    className={`font-bold ${
-                      quiz.difficulty === "EASY"
-                        ? "text-green-500"
-                        : quiz.difficulty === "MEDIUM"
-                        ? "text-yellow-500"
-                        : "text-red-500"
-                    }`}
-                  >
-                    {quiz.difficulty}
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-indigo-50 rounded-xl p-4 flex items-center space-x-3">
-                <CiClock1 className="w-6 h-6 text-indigo-600" />
-                <div>
-                  <p className="text-sm text-gray-500">Time Limit</p>
-                  <p className="font-semibold text-indigo-600">
-                    {quiz.timeLimit / 60} minutes
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-purple-50 rounded-xl p-4 flex items-center space-x-3">
-                <VscBook className="w-6 h-6 text-purple-600" />
-                <div>
-                  <p className="text-sm text-gray-500">Questions</p>
-                  <p className="font-semibold text-purple-600">
-                    {quiz.noOfQuestions}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Start Button */}
-            <div className="text-center pt-4">
-              <button
-                onClick={handleStartClick}
-                className="inline-flex items-center justify-center px-8 py-3 text-lg font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg hover:from-blue-700 hover:to-indigo-700 transform transition-all duration-200 space-x-2"
-              >
-                <span>Start Quiz</span>
-                <svg
+              </span>
+            </h1>
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+              {quiz.description}
+            </p>
+          </motion.div>
+      
+          {/* Info Cards */}
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6"
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: { staggerChildren: 0.1 }
+              }
+            }}
+            initial="hidden"
+            animate="show"
+          >
+            <InfoCard
+              icon={<IoBarChartOutline className="w-6 h-6" />}
+              label="Difficulty"
+              value={quiz.difficulty}
+              theme={
+                quiz.difficulty === "EASY" ? "success" :
+                quiz.difficulty === "MEDIUM" ? "warning" : "danger"
+              }
+            />
+      
+            <InfoCard
+              icon={<CiClock1 className="w-6 h-6" />}
+              label="Time Limit"
+              value={`${quiz.timeLimit / 60} minutes`}
+              theme="primary"
+            />
+      
+            <InfoCard
+              icon={<VscBook className="w-6 h-6" />}
+              label="Questions"
+              value={quiz.noOfQuestions}
+              theme="secondary"
+            />
+          </motion.div>
+      
+          {/* Start Button */}
+          <motion.div 
+            className="text-center pt-6"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <motion.button
+              onClick={handleStartClick}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="group relative inline-flex items-center justify-center px-8 py-4 
+                         text-lg font-medium text-white overflow-hidden rounded-xl
+                         bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 
+                         shadow-lg shadow-purple-500/25 transition-all duration-300"
+            >
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-r 
+                              from-purple-700 via-indigo-700 to-pink-700 opacity-0 
+                              group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="relative flex items-center gap-2">
+                Start Quiz
+                <motion.svg
                   className="w-5 h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
                 >
                   <path
                     strokeLinecap="round"
@@ -608,11 +698,12 @@ export default function Quiz() {
                     strokeWidth="2"
                     d="M13 7l5 5m0 0l-5 5m5-5H6"
                   />
-                </svg>
-              </button>
-            </div>
-          </div>
+                </motion.svg>
+              </span>
+            </motion.button>
+          </motion.div>
         </motion.div>
+      </motion.div>
       )}
 
       {/* Quiz Screen */}

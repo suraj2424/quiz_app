@@ -3,6 +3,8 @@ const mongoConnect = require("./db");
 const cors = require("cors");
 const quizRoutes = require("./routes/quiz");
 const userRoutes = require("./routes/users");
+const analyticsRoutes = require('./routes/analytics');
+
 const attemptsRouter = require('./routes/attempts');
 const cookieParser = require('cookie-parser');
 const { Server } = require("socket.io");
@@ -35,6 +37,7 @@ app.use(cors(corsOptions))
 app.use("/api", userRoutes)
 app.use("/api/quiz", quizRoutes);
 app.use('/api/attempts', attemptsRouter);
+app.use('/api/analytics', analyticsRoutes);
 
 
 // configuring mongodb

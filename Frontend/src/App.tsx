@@ -2,14 +2,15 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Home from "./components/Home";
+import Home from "./components/pages/Home";
 import Quiz from "./components/Quiz";
 import TokenContextProvider from "./contexts/TokenContextProvider";
 import QuizForm from "./components/QuizForm";
-import Register from "./components/Register";
-import Login from "./components/Login"
-import Profile from "./components/Profile";
-import Dashboard from "./components/Dashboard";
+import Register from "./components/pages/Register";
+import Login from "./components/pages/Login"
+import Profile from "./components/pages/Profile";
+import Dashboard from "./components/pages/Dashboard";
+import { QuizAnalytics } from './components/analytics/QuizAnalytics';
 function App() {
   return (
     <Router>
@@ -24,6 +25,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/create-quiz" element={<QuizForm/>}/>
             <Route path="/dashboard/:id" element={<Dashboard/>}/>
+            <Route path="/analytics" element={<QuizAnalytics data={[]} />} />
           </Routes>
         </TokenContextProvider>
       </div>

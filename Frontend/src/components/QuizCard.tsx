@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { motion } from 'framer-motion'
+import { AiOutlineFileText } from "react-icons/ai";
+// clock from react-icons
+import { FaClock } from 'react-icons/fa';
+import { FaX } from "react-icons/fa6";
+
 
 interface QuizCardProps {
   quiz: {
@@ -65,109 +71,157 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
     });
   };
 
+  const getDifficultyStyles = (difficulty: string) => {
+    const baseStyles = "px-3 py-1 rounded-full text-xs font-medium";
+    switch (difficulty) {
+      case "EASY":
+        return `${baseStyles} bg-gradient-to-r from-emerald-500/20 to-emerald-500/10 text-emerald-700 border border-emerald-500/20`;
+      case "MEDIUM":
+        return `${baseStyles} bg-gradient-to-r from-amber-500/20 to-amber-500/10 text-amber-700 border border-amber-500/20`;
+      case "HARD":
+        return `${baseStyles} bg-gradient-to-r from-rose-500/20 to-rose-500/10 text-rose-700 border border-rose-500/20`;
+      default:
+        return baseStyles;
+    }
+  };
+
   return (
     <div className="relative">
-      {/* Quiz Card */}
-      <div className="bg-white border border-gray-300 rounded bg-opacity-30 p-2 transition-all duration-300 hover:bg-slate-50">
-        <div className="p-2">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold mb-1">{quiz.title}</h3>
-            <p
-              className={`mb-2 p-0 justify-center flex items-center border text-sm font-semibold font-roboto tracking-wider ${
-                quiz.difficulty === "EASY"
-                  ? "text-green-700 bg-green-300 border-green-600 w-11"
-                  : quiz.difficulty === "MEDIUM"
-                  ? "text-yellow-700 bg-yellow-300 border-yellow-500 w-[70px]"
-                  : "text-red-700 bg-red-300 border-red-600 w-10"
-              }`}
-            >
+      <motion.div
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.2 }}
+        className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
+      >
+        <div className="p-6">
+          {/* Header */}
+          <div className="flex items-start justify-between mb-4">
+            <h3 className="text-xl font-semibold text-gray-900 leading-tight">
+              {quiz.title}
+            </h3>
+            <span className={getDifficultyStyles(quiz.difficulty)}>
               {quiz.difficulty}
-            </p>
+            </span>
           </div>
-          <div className="flex gap-2 mb-2">
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 mb-4">
             {quiz.tags.map((tag, index) => (
               <span
                 key={index}
-                className="bg-gray-100 border border-gray-300 text-gray-700 text-xs font-bold px-2 py-1 rounded"
+                className="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-medium"
               >
                 {tag.toUpperCase()}
               </span>
             ))}
           </div>
-          <p className="text-gray-500 font-semibold text-sm">
-            {quiz.questionCount} Questions
-          </p>
-          <div className="flex justify-between mt-4">
-            <div>
-              <p className="text-xs font-semibold text-purple-700">
-                Created by
-              </p>
-              <div className="flex items-center gap-2 mt-2">
-                <p className="text-xs font-semibold text-gray-400">
-                  {quiz.createdBy.name}
-                </p>
-              </div>
+
+          {/* Info Section */}
+          <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-2">
+              <AiOutlineFileText className="w-4 h-4 text-gray-400" />
+              <span className="text-sm text-gray-600">
+                {quiz.questionCount} Questions
+              </span>
             </div>
-            <div>
-              <button
-                className="border-gray-300 bg-gray-50 border text-black hover:bg-slate-700 hover:text-white font-bold py-2 px-4 rounded transition-all ease-in-out duration-300"
-                onClick={handleStartQuiz}
-              >
-                Start Quiz
-              </button>
+            <div className="flex items-center gap-2">
+              <FaClock className="w-4 h-4 text-gray-400" />
+              <span className="text-sm text-gray-600">
+                ~{quiz.questionCount * 1.5} mins
+              </span>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Error Alert */}
-      {showError && (
-        <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded relative">
-          <span className="block sm:inline">{errorMessage}</span>
-          <button
-            onClick={() => setShowError(false)}
-            className="absolute top-0 bottom-0 right-0 px-4 py-3"
-          >
-            <span className="text-xl">&times;</span>
-          </button>
+          {/* Footer */}
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs text-gray-500 mb-1">Created by</p>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs">
+                  {quiz.createdBy.name?.[0].toUpperCase()}
+                </div>
+                <span className="text-sm font-medium text-gray-700">
+                  {quiz.createdBy.name}
+                </span>
+              </div>
+            </div>
+            
+            <button
+              onClick={handleStartQuiz}
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 
+                       text-white font-medium hover:from-indigo-600 hover:to-purple-600 
+                       transform transition-all duration-200 hover:shadow-lg
+                       focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            >
+              Start Quiz
+            </button>
+          </div>
         </div>
-      )}
+      </motion.div>
 
       {/* Auth Dialog */}
       {showAuthDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Authentication Required
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl"
+          >
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold text-gray-900">
+                Join to Start Quiz
               </h3>
-              <p className="text-sm text-gray-500 mt-2">
-                Please login or register to start the quiz.
+              <p className="text-gray-600 mt-2">
+                Create an account or log in to track your progress and compete with others.
               </p>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+            <div className="space-y-3">
               <button
                 onClick={handleLogin}
-                className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 
+                         text-white font-medium hover:from-indigo-600 hover:to-purple-600 
+                         transition-all duration-200"
               >
-                Login
+                Log In
               </button>
               <button
                 onClick={handleRegister}
-                className="w-full sm:w-auto px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-700 
+                         font-medium hover:bg-gray-50 transition-all duration-200"
               >
-                Register
+                Create Account
               </button>
               <button
                 onClick={() => setShowAuthDialog(false)}
-                className="w-full sm:w-auto px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                className="w-full px-4 py-3 text-gray-500 hover:text-gray-700 
+                         font-medium transition-colors duration-200"
               >
-                Cancel
+                Maybe Later
               </button>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Error Alert */}
+      {showError && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-4 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 relative"
+        >
+          <span className="block sm:inline">{errorMessage}</span>
+          <button
+            onClick={() => setShowError(false)}
+            className="absolute top-4 right-4 text-rose-500 hover:text-rose-700"
+          >
+            <FaX className="w-5 h-5" />
+          </button>
+        </motion.div>
       )}
     </div>
   );

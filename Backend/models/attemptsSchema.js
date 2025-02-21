@@ -45,10 +45,32 @@ const AttemptSchema = new mongoose.Schema({
   },
   timeSpent: {
     type: Number
+  },analysisData: {
+    timePerQuestion: Number,
+    accuracyRate: Number,
+    improvementRate: Number
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
+
+// Add virtual for calculating percentage score
+AttemptSchema.virtual('percentageScore').get(function() {
+  return (this.score / this.totalScore) * 100;
+});
+
+// Add methods for analytics
+AttemptSchema.methods.calculateAnalytics = function() {
+  const timePerQuestion = this.timeSpent / this.totalQuestions;
+  const accuracyRate = (this.score / this.totalScore) * 100;
+  
+  return {
+    timePerQuestion,
+    accuracyRate
+  };
+};
 
 const Attempt = mongoose.model('attempts', AttemptSchema);
 
