@@ -57,10 +57,6 @@ export default function Home() {
     animate: { opacity: 1, y: 0 },
   };
 
-  const fadeInUpTransition = {
-    duration: 0.6,
-  };
-
   const stagger = {
     animate: {
       transition: {
