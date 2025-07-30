@@ -102,8 +102,9 @@ export default function Authentication() {
 
     try {
       const endpoint: string = isRegister ? "/register" : "/login";
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
       const response: Response = await fetch(
-        `http://localhost:5000/api${endpoint}`,
+        `${backendUrl}/api${endpoint}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

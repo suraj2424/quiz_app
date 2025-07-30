@@ -11,6 +11,7 @@ import { IoChevronDown } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { FaRocket, FaBrain, FaChartLine } from "react-icons/fa";
+
 interface Quiz {
   _id: string;
   id: number;
@@ -65,10 +66,38 @@ export default function Home() {
     },
   };
 
+  // Set page metadata
+useEffect(() => {
+  document.title = "Quizin' - Solve Quizzes to Learn";
+  
+  // Set meta description
+  const metaDescription = document.querySelector('meta[name="description"]');
+  if (metaDescription) {
+    metaDescription.setAttribute('content', 'Interactive learning platform with engaging quizzes. Test your knowledge, track progress, and learn effectively with Quizin\'s adaptive difficulty system.');
+  } else {
+    const meta = document.createElement('meta');
+    meta.name = 'description';
+    meta.content = 'Interactive learning platform with engaging quizzes. Test your knowledge, track progress, and learn effectively with Quizin\'s adaptive difficulty system.';
+    document.head.appendChild(meta);
+  }
+
+  // Set meta keywords
+  const metaKeywords = document.querySelector('meta[name="keywords"]');
+  if (metaKeywords) {
+    metaKeywords.setAttribute('content', 'quiz, learning, education, interactive, knowledge, test, study, online learning');
+  } else {
+    const meta = document.createElement('meta');
+    meta.name = 'keywords';
+    meta.content = 'quiz, learning, education, interactive, knowledge, test, study, online learning';
+    document.head.appendChild(meta);
+  }
+}, []);
+
   useEffect(() => {
     const fetchQuizzes = async () => {
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
       try {
-        const response = await fetch("http://localhost:5000/api/quiz", {
+        const response = await fetch(`${backendUrl}/api/quiz`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -99,10 +128,11 @@ export default function Home() {
     };
 
     const verifyToken = async () => {
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
       if (token) {
         try {
           const response = await fetch(
-            "http://localhost:5000/api/verify-token",
+            `${backendUrl}/api/verify-token`,
             {
               method: "GET",
               headers: {

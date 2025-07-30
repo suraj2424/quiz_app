@@ -68,9 +68,11 @@ export default function Dashboard() {
       try {
         const token = cookies.get("token");
 
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+
         // Fetch attempts data
         const attemptsResponse = await fetch(
-          "http://localhost:5000/api/attempts/user/quizzes",
+          `${backendUrl}/api/attempts/user/quizzes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -84,7 +86,7 @@ export default function Dashboard() {
 
         // Fetch analytics data
         const analyticsResponse = await fetch(
-          "http://localhost:5000/api/analytics/user/current",
+          `${backendUrl}/api/analytics/user/current`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

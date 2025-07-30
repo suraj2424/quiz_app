@@ -61,12 +61,14 @@ export const AttemptSummaryModal = ({
   useEffect(() => {
     const fetchSummary = async () => {
       if (!isOpen || !attempt?.attemptId) return;
+
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
       
       setLoading(true);
       setError(null);
       try {
         const token = cookies.get('token');
-        const response = await fetch(`http://localhost:5000/api/attempts/${attempt.attemptId}/summary`, {
+        const response = await fetch(`${backendUrl}/api/attempts/${attempt.attemptId}/summary`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

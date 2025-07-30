@@ -78,8 +78,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
         return;
       }
 
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+
       // Verify token with backend
-      const response = await fetch("http://localhost:5000/api/verify-token", {
+      const response = await fetch(`${backendUrl}/api/verify-token`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

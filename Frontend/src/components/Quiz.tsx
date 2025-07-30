@@ -91,7 +91,8 @@ export default function Quiz() {
     const verifyToken = async () => {
       try {
         const token = cookies.get("token");
-        const response = await fetch("http://localhost:5000/api/verify-token", {
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+        const response = await fetch(`${backendUrl}/api/verify-token`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -110,9 +111,11 @@ export default function Quiz() {
 
   useEffect(() => {
     const fetchQuiz = async () => {
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+
       try {
         const response = await fetch(
-          `http://localhost:5000/api/quiz/${quizId}`
+          `${backendUrl}/api/quiz/${quizId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch quiz");
@@ -344,7 +347,10 @@ export default function Quiz() {
 
       console.log('Submitting attempt data:', attemptData); // Debug log
 
-      const response = await fetch("http://localhost:5000/api/attempts", {
+      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+
+
+      const response = await fetch(`${backendUrl}/api/attempts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
