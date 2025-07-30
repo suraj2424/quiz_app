@@ -210,7 +210,7 @@ const QuizForm: React.FC = () => {
     try {
       const cookies = new Cookies();
       const token = cookies.get("token");
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
       const response = await fetch(`${backendUrl}/api/quiz`, {
         method: "POST",
         headers: {

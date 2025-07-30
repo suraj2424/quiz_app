@@ -52,7 +52,7 @@ const Login = () => {
       setUser((prev: User) => ({ ...prev, type }));
     }
 
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
     try {
       const response = await fetch(`${backendUrl}/api/login`, {

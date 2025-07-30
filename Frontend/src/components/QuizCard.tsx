@@ -78,7 +78,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
         return;
       }
 
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
       // Verify token with backend
       const response = await fetch(`${backendUrl}/api/verify-token`, {

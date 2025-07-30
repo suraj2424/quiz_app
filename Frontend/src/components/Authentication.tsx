@@ -102,7 +102,7 @@ export default function Authentication() {
 
     try {
       const endpoint: string = isRegister ? "/register" : "/login";
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
       const response: Response = await fetch(
         `${backendUrl}/api${endpoint}`,
         {

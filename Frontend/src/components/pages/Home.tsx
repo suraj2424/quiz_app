@@ -95,7 +95,7 @@ useEffect(() => {
 
   useEffect(() => {
     const fetchQuizzes = async () => {
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
       try {
         const response = await fetch(`${backendUrl}/api/quiz`, {
           method: "GET",
@@ -128,7 +128,7 @@ useEffect(() => {
     };
 
     const verifyToken = async () => {
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
       if (token) {
         try {
           const response = await fetch(

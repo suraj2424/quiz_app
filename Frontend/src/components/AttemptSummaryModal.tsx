@@ -62,7 +62,7 @@ export const AttemptSummaryModal = ({
     const fetchSummary = async () => {
       if (!isOpen || !attempt?.attemptId) return;
 
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
       
       setLoading(true);
       setError(null);

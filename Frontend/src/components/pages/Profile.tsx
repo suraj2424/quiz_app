@@ -20,7 +20,7 @@ const Profile = () => {
     const fetchUser = async () => {
       try {
         const token = cookies.get("token");
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
         const response = await fetch(`${backendUrl}/api/verify-token`, {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -91,7 +91,7 @@ export default function Quiz() {
     const verifyToken = async () => {
       try {
         const token = cookies.get("token");
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
         const response = await fetch(`${backendUrl}/api/verify-token`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -111,7 +111,7 @@ export default function Quiz() {
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
       try {
         const response = await fetch(
@@ -347,7 +347,7 @@ export default function Quiz() {
 
       console.log('Submitting attempt data:', attemptData); // Debug log
 
-      const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 
       const response = await fetch(`${backendUrl}/api/attempts`, {
