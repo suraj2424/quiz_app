@@ -156,33 +156,33 @@ export default function Quiz() {
   }, [quiz?.randomizeQuestions]);
 
   useEffect(() => {
-    let timer: number | null = null;
-    const startTime = new Date(); // Track actual start time
+  let timer: number | null = null;
+  const startTime = new Date(); // Track actual start time
 
-    if (quizStarted && quiz && timeElapsed < quiz.timeLimit) {
-      timer = setInterval(() => {
-        const currentTime = new Date();
-        const actualTimeElapsed = Math.floor(
-          (currentTime.getTime() - startTime.getTime()) / 1000
-        );
+  if (quizStarted && quiz && timeElapsed < quiz.timeLimit) {
+    timer = window.setInterval(() => {
+      const currentTime = new Date();
+      const actualTimeElapsed = Math.floor(
+        (currentTime.getTime() - startTime.getTime()) / 1000
+      );
 
-        setTimeElapsed(() => {
-          if (actualTimeElapsed >= quiz.timeLimit) {
-            if (timer) clearInterval(timer);
-            setShowScore(true);
-            setQuizStarted(false);
-            return quiz.timeLimit;
-          }
-          return actualTimeElapsed;
-        });
-      }, 1000);
-    }
+      setTimeElapsed(() => {
+        if (actualTimeElapsed >= quiz.timeLimit) {
+          if (timer) window.clearInterval(timer);
+          setShowScore(true);
+          setQuizStarted(false);
+          return quiz.timeLimit;
+        }
+        return actualTimeElapsed;
+      });
+    }, 1000);
+  }
 
-    // Cleanup
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [quizStarted, quiz]);
+  // Cleanup
+  return () => {
+    if (timer) window.clearInterval(timer);
+  };
+}, [quizStarted, quiz]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
