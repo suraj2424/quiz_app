@@ -2,16 +2,6 @@
 import { useState, useMemo } from "react";
 import QuizCard from "../QuizCard/QuizCard";
 
-interface Question {
-    questionType: string;
-    questionText: string;
-    options: string[];
-    correctAnswer: string;
-    hint: string;
-    answerExplanation: string;
-    points: number;
-}
-
 interface Quiz {
   _id: string;
   id: number;
@@ -19,7 +9,12 @@ interface Quiz {
   tags: string[];
   difficulty: string;
   questionCount: number;
-  questions: Question[];
+  questions: {
+    id: number;
+    question: string;
+    options: string[];
+    answer: string;
+  }[];
   createdBy: {
     name?: string;
   };
