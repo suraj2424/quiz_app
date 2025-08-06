@@ -353,87 +353,122 @@
   animation: slideDown 0.2s ease-out;
 }
 
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
+/* Only add the animations that Tailwind doesn't provide */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
   }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
   }
 }
 
-.animate-blob {
-  animation: blob 7s infinite;
-}
+/* Add these to your Tailwind config or keep in CSS */
+.animate-fadeIn { animation: fadeIn 0.8s ease-out; }
+.animate-slideUp { animation: slideUp 0.8s ease-out; }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.8; }
-}
-
-.pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-float-delay {
-  animation: float 3s ease-in-out infinite;
-  animation-delay: 1s;
-}
-
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-.custom-scrollbar-light {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
-}
-
-.custom-scrollbar-light::-webkit-scrollbar {
+/* Custom scrollbar for webkit browsers */
+.scrollbar-thin::-webkit-scrollbar {
   width: 6px;
 }
 
-.custom-scrollbar-light::-webkit-scrollbar-track {
-  background: transparent;
+.scrollbar-thumb-purple-300::-webkit-scrollbar-thumb {
+  background-color: #d8b4fe;
+  border-radius: 3px;
 }
 
-.custom-scrollbar-light::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-} 
+.scrollbar-track-gray-100::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+}
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
 
 @keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
+  0% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+  33% { transform: translate(30px, -50px) scale(1.1) rotate(120deg); }
+  66% { transform: translate(-20px, 20px) scale(0.9) rotate(240deg); }
+  100% { transform: translate(0px, 0px) scale(1) rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px) rotate(0deg); 
   }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
+  25% { 
+    transform: translateY(-20px) translateX(10px) rotate(90deg); 
   }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
+  50% { 
+    transform: translateY(-10px) translateX(-10px) rotate(180deg); 
   }
-  100% {
-    transform: translate(0px, 0px) scale(1);
+  75% { 
+    transform: translateY(-30px) translateX(5px) rotate(270deg); 
   }
+}
+
+@keyframes morph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 4s ease infinite;
 }
 
 .animate-blob {
   animation: blob 7s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-morph {
+  animation: morph 8s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
 }
 
 .animation-delay-2000 {
@@ -442,4 +477,9 @@
 
 .animation-delay-4000 {
   animation-delay: 4s;
+}
+
+/* Glassmorphism utilities */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
 }

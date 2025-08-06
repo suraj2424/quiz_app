@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Home from "./components/pages/Home";
+import Home from "./components/home/Home";
 import Quiz from "./components/Quiz";
 import TokenContextProvider from "./contexts/TokenContextProvider";
 import QuizForm from "./components/QuizForm";
