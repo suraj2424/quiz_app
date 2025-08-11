@@ -196,32 +196,18 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
               </div>
             ) : (
               /* Empty State */
-              <div className="text-center py-16">
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 max-w-md mx-auto">
-                  <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.5-.75-6.172-2.172M12 3v18" />
-                  </svg>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">No quizzes found</h3>
-                  <p className="text-gray-600 mb-6">
-                    {searchTerm || selectedDifficulty !== "all" || selectedCategory !== "all" 
-                      ? "Try adjusting your search criteria to find more quizzes."
-                      : "No quizzes are available at the moment."
-                    }
-                  </p>
-                  {(searchTerm || selectedDifficulty !== "all" || selectedCategory !== "all") && (
-                    <button
-                      onClick={() => {
-                        setSearchTerm("");
-                        setSelectedDifficulty("all");
-                        setSelectedCategory("all");
-                      }}
-                      className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors"
-                    >
-                      Clear Filters
-                    </button>
-                  )}
-                </div>
-              </div>
+              /* Loading State */
+<div className="text-center py-16" role="status" aria-live="polite">
+  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 max-w-md mx-auto">
+    {/* Spinner */}
+    <div className="w-16 h-16 rounded-full border-4 border-purple-200 border-t-purple-600 animate-spin mx-auto mb-4" />
+    
+    <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading quizzes...</h3>
+    <p className="text-gray-600">
+      Fetching the latest quizzes. Please wait.
+    </p>
+  </div>
+</div>
             )}
           </>
         )}
