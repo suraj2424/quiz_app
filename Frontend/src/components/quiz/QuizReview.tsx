@@ -92,7 +92,7 @@ export default function QuizReview({
                     <div className="p-3 bg-green-50 rounded-lg border border-green-200">
                       <p className="text-sm text-green-600 mb-1">Correct Answer:</p>
                       <p className="font-medium text-green-800">
-                        {question.options[0].optionText}
+                        {(question as any).correctAnswer || question.options?.[0]?.optionText || 'N/A'}
                       </p>
                     </div>
                   </div>

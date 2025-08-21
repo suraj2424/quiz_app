@@ -30,7 +30,8 @@ export const checkAnswer = (
 ): { isCorrect: boolean; points: number } => {
   try {
     if (question.questionType === "Short Answer") {
-      const correctAnswer = question.options[0].optionText;
+      // For short answer, use the dedicated correctAnswer field
+      const correctAnswer = (question as any).correctAnswer || question.options?.[0]?.optionText || "";
       const userText = String(userAnswer).trim();
       const similarity = calculateLevenshteinRatio(
         userText.toLowerCase(),

@@ -1,13 +1,13 @@
 // Home.tsx
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Header from "./Header";
 import HeroSection from "./HeroSection";
 import QuizzesSection from "./QuizzesSection";
 import FeaturesSection from "./FeaturesSection";
 import LoadingSpinner from "./LoadingSpinner";
-import { TokenContext } from "../../contexts/TokenContextProvider";
 import { useQuizData } from "../../hooks/useQuizData";
 import { useDocumentMeta } from "../../hooks/useDocumentMeta";
+import { useToken } from "../../contexts/useToken";
 
 // interface Quiz {
 //   _id: string;
@@ -37,7 +37,7 @@ export interface UserData {
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { token, removeToken } = useContext(TokenContext);
+  const { token, removeToken } = useToken();
   
   const { quizzes } = useQuizData();
   useDocumentMeta();

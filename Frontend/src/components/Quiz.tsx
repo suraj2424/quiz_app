@@ -121,6 +121,9 @@ export default function Quiz() {
           throw new Error("Failed to fetch quiz");
         }
         const data = await response.json();
+
+        
+
         const modifiedData = {
           ...data,
           timeLimit: data.timeLimit * 60,

@@ -8,8 +8,21 @@ export default function QuizCardInfo({ questionCount, estimatedTime }: QuizCardI
   return (
     <div className="flex items-center gap-6 py-4 border-t border-b border-gray-100">
       <div className="flex items-center gap-2">
-        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.5-.75-6.172-2.172M12 3v18" />
+        {/* Clipboard Document List (questions) - Heroicons outline */}
+        <svg
+          className="w-5 h-5 text-gray-500"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 13.5h6m-6-3h6m-1.5-6H9.75A2.25 2.25 0 007.5 6.75v10.5A2.25 2.25 0 009.75 19.5h4.5A2.25 2.25 0 0016.5 17.25V6.75A2.25 2.25 0 0014.25 4.5zm0 0V3.75A1.5 1.5 0 0012.75 2.25h-1.5A1.5 1.5 0 009.75 3.75V4.5"
+          />
         </svg>
         <span className="text-sm text-gray-600">
           {questionCount} Question{questionCount !== 1 ? 's' : ''}
@@ -17,8 +30,17 @@ export default function QuizCardInfo({ questionCount, estimatedTime }: QuizCardI
       </div>
       
       <div className="flex items-center gap-2">
-        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        {/* Clock - Heroicons outline */}
+        <svg
+          className="w-5 h-5 text-gray-500"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z" />
         </svg>
         <span className="text-sm text-gray-600">
           ~{estimatedTime} min

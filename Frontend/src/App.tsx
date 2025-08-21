@@ -11,6 +11,8 @@ import Login from "./components/pages/Login"
 import Profile from "./components/pages/Profile";
 import Dashboard from "./components/dashboard/Dashboard";
 import { QuizAnalytics } from './components/analytics/QuizAnalytics';
+import AttemptReview from './components/attempts/AttemptReview';
+import History from './components/history/History';
 function App() {
   return (
     <Router>
@@ -26,6 +28,8 @@ function App() {
             <Route path="/create-quiz" element={<QuizForm/>}/>
             <Route path="/dashboard/:id" element={<Dashboard/>}/>
             <Route path="/analytics" element={<QuizAnalytics data={[]} />} />
+            <Route path="/attempt/:id" element={<AttemptReview />} />
+            <Route path="/history/:id" element={<History />} />
           </Routes>
         </TokenContextProvider>
       </div>

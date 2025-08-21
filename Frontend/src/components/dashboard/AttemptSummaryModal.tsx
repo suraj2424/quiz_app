@@ -1,6 +1,8 @@
 import { formatDateTime } from '../../utils/dateUtils';
 import { formatTime } from '../../utils/formatTime';
 import Modal from '../UI/Modal';
+import { useNavigate } from 'react-router-dom';
+
 import ScoreIndicator from './ScoreIndicator';
 import type { Attempt } from './types';
 
@@ -23,6 +25,8 @@ export default function AttemptSummaryModal({
   const isExcellent = percentage >= 90;
   const isGood = percentage >= 80;
   const isPassing = percentage >= 60;
+
+  const navigate = useNavigate();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -181,10 +185,7 @@ export default function AttemptSummaryModal({
           
           <button
             className="flex-1 px-4 py-2 border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-medium rounded-lg transition-colors duration-200"
-            onClick={() => {
-              // Handle view detailed results
-              console.log('View detailed results:', attempt.attemptId);
-            }}
+            onClick={() => navigate(`/attempt/${attempt.attemptId}`)}
           >
             View Details
           </button>

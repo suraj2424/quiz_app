@@ -10,6 +10,7 @@ interface QuizScoreProps {
   onTryAgain: () => void;
   onReview: () => void;
   onBackToHome: () => void;
+  onGoToDashboard: () => void;
 }
 
 export default function QuizScore({
@@ -19,7 +20,8 @@ export default function QuizScore({
   answeredQuestions,
   onTryAgain,
   onReview,
-  onBackToHome
+  onBackToHome,
+  onGoToDashboard
 }: QuizScoreProps) {
   const totalScore = quiz.questions.reduce((total, q) => total + q.points, 0);
   const correctAnswers = answeredQuestions.filter(q => q.isCorrect).length;
@@ -136,6 +138,13 @@ export default function QuizScore({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
             Back to Home
+          </Button>
+
+          <Button variant="secondary" onClick={onGoToDashboard} className="flex-1 sm:flex-none">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M3 12h18M3 17h18" />
+            </svg>
+            Go to Dashboard
           </Button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 
@@ -20,6 +20,7 @@ export default function Quiz() {
   const { id } = useParams();
   const quizId = id?.split("=")[1];
   const cookies = new Cookies();
+  const navigate = useNavigate();
 
   // State
   const [quiz, setQuiz] = useState<QuizType | null>(null);
@@ -47,6 +48,46 @@ export default function Quiz() {
       fetchQuiz();
     }
   }, [quizId]);
+
+  // Prevent accidental navigation/back while quiz is in progress
+  useEffect(() => {
+    if (quizState.currentScreen !== 'quiz') return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    // Push a history state to intercept back navigation
+    const pushBlockState = () => {
+      try {
+        window.history.pushState(null, '', window.location.href);
+      } catch (_) {
+        // no-op if pushState fails
+      }
+    };
+
+    const handlePopState = () => {
+      const confirmExit = window.confirm('Are you sure you want to exit? You will lose your progress.');
+      if (confirmExit) {
+        // Allow navigation away by not re-pushing, but clear quiz state
+        quizState.resetQuiz();
+      } else {
+        // Re-push to stay on page
+        pushBlockState();
+      }
+    };
+
+    // Attach listeners
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    pushBlockState();
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [quizState.currentScreen]);
 
   useEffect(() => {
     if (quiz?.randomizeQuestions) {
@@ -267,6 +308,15 @@ export default function Quiz() {
     setQuiz({ ...quiz, questions: updatedQuestions });
   };
 
+  // Navigation helpers
+  const handleGoToDashboard = () => {
+    if (user?.user?.id) {
+      navigate(`/dashboard/${user.user.id}`);
+    } else {
+      navigate('/');
+    }
+  };
+
   // Loading and error states
   if (loading) {
     return (
@@ -348,6 +398,7 @@ export default function Quiz() {
           onTryAgain={handleStartQuiz}
           onReview={() => quizState.setCurrentScreen('review')}
           onBackToHome={() => quizState.setCurrentScreen('welcome')}
+          onGoToDashboard={handleGoToDashboard}
         />
       )}
 

@@ -16,7 +16,7 @@ export default function QuizCardHeader({ title, difficulty, tags }: QuizCardHead
         <h3 className="text-lg font-semibold text-gray-900 leading-snug flex-1">
           {title}
         </h3>
-        <DifficultyBadge difficulty={difficulty} />
+        <DifficultyBadge difficulty={difficulty} showIcon />
       </div>
 
       {/* Tags */}

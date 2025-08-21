@@ -34,9 +34,9 @@ export default function Modal({ isOpen, onClose, children, size = 'md' }: ModalP
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 overflow-y-auto flex items-start md:items-center justify-center">
       <div 
-        className={`bg-white rounded-xl shadow-xl w-full ${sizeClasses[size]} transform transition-all duration-200`}
+        className={`bg-white rounded-xl shadow-xl w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto transform transition-all duration-200`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative">

@@ -1,6 +1,7 @@
 import { Quiz } from '../../utils/quizTypes';
 import InfoCard from './InfoCard';
 import Button from '../UI/Button';
+import { useNavigate } from 'react-router-dom';
 
 interface QuizWelcomeProps {
   quiz: Quiz;
@@ -8,12 +9,27 @@ interface QuizWelcomeProps {
 }
 
 export default function QuizWelcome({ quiz, onStartQuiz }: QuizWelcomeProps) {
+  const navigate = useNavigate();
   return (
     <section className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 relative">
       {/* Background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(168,85,247,0.02)_25%,rgba(168,85,247,0.02)_50%,transparent_50%,transparent_75%,rgba(168,85,247,0.02)_75%)] bg-[length:60px_60px]" />
       
       <div className="relative max-w-4xl mx-auto px-6 py-20">
+        {/* Back button */}
+        <div className="mb-4">
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
+            aria-label="Back to Home"
+          >
+            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to Home
+          </button>
+        </div>
         <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-purple-100 p-8 space-y-8">
           
           {/* Header */}

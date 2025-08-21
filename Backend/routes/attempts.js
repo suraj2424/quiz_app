@@ -10,7 +10,8 @@ router.post("/", authenticate, async (req, res) => {
   try {
     // Validate required fields
     const requiredFields = ["quiz", "answers", "score", "totalQuestions"];
-    const missingFields = requiredFields.filter((field) => !req.body[field]);
+    // Only treat fields as missing if they are undefined or null (allow 0 for numeric fields)
+    const missingFields = requiredFields.filter((field) => req.body[field] === undefined || req.body[field] === null);
 
     if (missingFields.length) {
       return res.status(400).json({
