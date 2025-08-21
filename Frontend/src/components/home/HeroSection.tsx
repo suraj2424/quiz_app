@@ -37,10 +37,6 @@ export default function HeroSection() {
               >
                 Explore Quizzes
               </button>
-              
-              <button className="px-8 py-4 border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-semibold rounded-xl transition-colors duration-200">
-                Watch Demo
-              </button>
             </div>
 
             {/* Quiz Types */}
