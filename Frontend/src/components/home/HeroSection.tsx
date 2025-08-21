@@ -1,13 +1,5 @@
 // components/HeroSection.tsx
-import { useState } from 'react';
-
 export default function HeroSection() {
-  const [stats] = useState([
-    { number: '10K+', label: 'Active Learners' },
-    { number: '500+', label: 'Expert Quizzes' },
-    { number: '95%', label: 'Success Rate' }
-  ]);
-
   const scrollToQuizzes = () => {
     const quizzesSection = document.getElementById('quizzes-section');
     quizzesSection?.scrollIntoView({ behavior: 'smooth' });
@@ -23,22 +15,17 @@ export default function HeroSection() {
           
           {/* Left Content */}
           <div className="space-y-8">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 border border-purple-200 rounded-full text-purple-700 text-sm font-medium">
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-              Trusted by 10,000+ learners worldwide
-            </div>
 
             {/* Main Heading */}
             <div className="space-y-4">
               <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Master Any Subject
-                <span className="block text-purple-600">Through Smart Quizzes</span>
+                Test Your Knowledge
+                <span className="block text-purple-600">With Expert Quizzes</span>
               </h1>
               
               <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                Accelerate your learning with AI-powered quizzes designed by experts. 
-                Track progress, identify weak spots, and achieve mastery faster than ever.
+                Challenge yourself with carefully crafted quizzes. 
+                Learn through practice and track your progress.
               </p>
             </div>
 
@@ -56,12 +43,17 @@ export default function HeroSection() {
               </button>
             </div>
 
-            {/* Stats */}
+            {/* Quiz Types */}
             <div className="flex gap-8 pt-8 border-t border-gray-200">
-              {stats.map((stat, index) => (
+              {[
+                { icon: '⚡', label: 'Quick Quiz', sublabel: '5 min tests' },
+                { icon: '✓', label: 'Practice Tests', sublabel: 'Exam prep' },
+                { icon: '📚', label: 'Study Mode', sublabel: 'Learn & review' }
+              ].map((type, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-2xl lg:text-3xl font-bold text-gray-900">{stat.number}</div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
+                  <div className="text-2xl lg:text-3xl font-bold text-gray-900">{type.icon}</div>
+                  <div className="text-sm font-medium text-gray-900">{type.label}</div>
+                  <div className="text-xs text-gray-600">{type.sublabel}</div>
                 </div>
               ))}
             </div>
