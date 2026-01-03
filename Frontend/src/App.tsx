@@ -9,7 +9,7 @@ import QuizForm from "./components/QuizForm";
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login"
 import Profile from "./components/pages/Profile";
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./components/dashboard2/Dashboard";
 import { QuizAnalytics } from './components/analytics/QuizAnalytics';
 import AttemptReview from './components/attempts/AttemptReview';
 import History from './components/history/History';

@@ -1,4 +1,3 @@
-// components/dashboard/Dashboard.tsx
 import { useState } from 'react';
 import DashboardHeader from './DashboardHeader';
 import TabNavigation from './TabNavigation';

@@ -1,4 +1,22 @@
 // components/HeroSection.tsx
+import { 
+  Zap, 
+  CheckCircle, 
+  BookOpen, 
+  Lightbulb, 
+  Star, 
+  TrendingUp,
+  BarChart3,
+  GraduationCap,
+  ArrowRight,
+  Play,
+  Clock,
+  Users,
+  Award,
+  Sparkles,
+  ChevronRight
+} from 'lucide-react';
+
 export default function HeroSection() {
   const scrollToQuizzes = () => {
     const quizzesSection = document.getElementById('quizzes-section');
@@ -6,26 +24,41 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="min-h-[calc(100vh-80px)] bg-gradient-to-b from-slate-50 to-white relative">
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(168,85,247,0.02)_25%,rgba(168,85,247,0.02)_50%,transparent_50%,transparent_75%,rgba(168,85,247,0.02)_75%)] bg-[length:60px_60px]" />
+    <section className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-slate-50 via-white to-purple-50/30 relative overflow-hidden">
+      {/* Premium Background Elements */}
+      <div className="absolute inset-0">
+        {/* Gradient Orbs */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-200/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-purple-100/20 to-blue-100/20 rounded-full blur-3xl" />
+        
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(168,85,247,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      </div>
       
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
           {/* Left Content */}
-          <div className="space-y-8">
+          <div className="space-y-10">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100/80 backdrop-blur-sm border border-purple-200/50 rounded-full">
+              <Sparkles className="w-4 h-4 text-purple-600" />
+              <span className="text-sm font-medium text-purple-700">Smart Learning Platform</span>
+            </div>
 
             {/* Main Heading */}
-            <div className="space-y-4">
-              <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
+            <div className="space-y-6">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-[1.1] tracking-tight">
                 Test Your Knowledge
-                <span className="block text-purple-600">With Expert Quizzes</span>
+                <span className="block mt-2 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  With Expert Quizzes
+                </span>
               </h1>
               
-              <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
+              <p className="text-lg lg:text-xl text-gray-600 leading-relaxed max-w-xl">
                 Challenge yourself with carefully crafted quizzes. 
-                Learn through practice and track your progress.
+                Learn through practice and track your progress with detailed insights.
               </p>
             </div>
 
@@ -33,153 +66,142 @@ export default function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                 onClick={scrollToQuizzes}
-                className="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-colors duration-200 shadow-lg shadow-purple-600/25"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg shadow-purple-600/25 hover:shadow-xl hover:shadow-purple-600/30 hover:-translate-y-0.5"
               >
-                Explore Quizzes
+                <Play className="w-5 h-5" fill="currentColor" />
+                <span>Start Learning</span>
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </button>
+              
+              <button className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-2xl border-2 border-gray-200 hover:border-gray-300 transition-all duration-300 shadow-sm hover:shadow-md">
+                <BookOpen className="w-5 h-5 text-purple-600" />
+                <span>Browse Categories</span>
               </button>
             </div>
 
-            {/* Quiz Types */}
-            <div className="flex gap-8 pt-8 border-t border-gray-200">
+            {/* Stats Row */}
+            <div className="flex flex-wrap gap-8 pt-8">
               {[
-                { icon: '⚡', label: 'Quick Quiz', sublabel: '5 min tests' },
-                { icon: '✓', label: 'Practice Tests', sublabel: 'Exam prep' },
-                { icon: '📚', label: 'Study Mode', sublabel: 'Learn & review' }
-              ].map((type, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-2xl lg:text-3xl font-bold text-gray-900">{type.icon}</div>
-                  <div className="text-sm font-medium text-gray-900">{type.label}</div>
-                  <div className="text-xs text-gray-600">{type.sublabel}</div>
+                { icon: Users, value: '10K+', label: 'Active Learners' },
+                { icon: Award, value: '500+', label: 'Expert Quizzes' },
+                { icon: TrendingUp, value: '95%', label: 'Success Rate' },
+              ].map((stat, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl flex items-center justify-center border border-purple-100">
+                    <stat.icon className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-gray-900">{stat.value}</div>
+                    <div className="text-sm text-gray-500">{stat.label}</div>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right Content - Quiz Preview */}
-          <div className="relative">
+          {/* Right Content - Premium Quiz Preview */}
+          <div className="relative lg:pl-8">
             {/* Main Quiz Card */}
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 relative z-10">
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-gray-200/50 border border-gray-100/80 p-6 lg:p-8 relative z-10">
               <div className="space-y-6">
                 {/* Quiz Header */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                      </svg>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+                      <Lightbulb className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">JavaScript Fundamentals</h3>
-                      <p className="text-sm text-gray-500">15 questions • 20 min</p>
+                      <h3 className="font-semibold text-gray-900 text-lg">JavaScript Fundamentals</h3>
+                      <div className="flex items-center gap-3 mt-1">
+                        <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                          <BookOpen className="w-4 h-4" />
+                          15 questions
+                        </span>
+                        <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                          <Clock className="w-4 h-4" />
+                          20 min
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                  <div className="px-3 py-1.5 bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 text-sm font-medium rounded-full border border-green-100">
                     Beginner
                   </div>
                 </div>
 
+                {/* Divider */}
+                <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+
                 {/* Question Preview */}
                 <div className="space-y-4">
-                  <h4 className="text-lg font-medium text-gray-900">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-lg">
+                      Question 8
+                    </span>
+                  </div>
+                  
+                  <h4 className="text-lg font-medium text-gray-900 leading-relaxed">
                     What is the correct way to declare a variable in JavaScript?
                   </h4>
                   
                   <div className="space-y-3">
-                    {['let variableName;', 'var variableName;', 'const variableName;', 'All of the above'].map((option, index) => (
+                    {[
+                      { text: 'let variableName;', selected: false },
+                      { text: 'var variableName;', selected: false },
+                      { text: 'const variableName;', selected: false },
+                      { text: 'All of the above', selected: true }
+                    ].map((option, index) => (
                       <div 
                         key={index} 
-                        className={`p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
-                          index === 3 
-                            ? 'border-green-500 bg-green-50' 
-                            : 'border-gray-200 hover:border-gray-300'
+                        className={`p-4 rounded-xl cursor-pointer transition-all duration-200 ${
+                          option.selected 
+                            ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-400 shadow-sm shadow-green-100' 
+                            : 'bg-gray-50/80 border-2 border-transparent hover:bg-gray-100/80 hover:border-gray-200'
                         }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                            index === 3 
+                        <div className="flex items-center gap-4">
+                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                            option.selected 
                               ? 'border-green-500 bg-green-500' 
-                              : 'border-gray-300'
+                              : 'border-gray-300 bg-white'
                           }`}>
-                            {index === 3 && (
-                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
+                            {option.selected && (
+                              <CheckCircle className="w-4 h-4 text-white" fill="currentColor" />
                             )}
                           </div>
-                          <span className={index === 3 ? 'text-green-700 font-medium' : 'text-gray-700'}>
-                            {option}
+                          <span className={`font-medium ${option.selected ? 'text-green-700' : 'text-gray-700'}`}>
+                            {option.text}
                           </span>
+                          {option.selected && (
+                            <div className="ml-auto">
+                              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-md">
+                                Correct!
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Progress */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Progress</span>
-                    <span className="text-gray-900 font-medium">8/15</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-purple-600 h-2 rounded-full" style={{ width: '53%' }} />
-                  </div>
-                </div>
               </div>
             </div>
 
-            {/* Floating Elements */}
-            <div className="absolute -top-4 -right-4 w-16 h-16 bg-yellow-400 rounded-2xl flex items-center justify-center shadow-lg rotate-12">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
+            {/* Floating Achievement Badge */}
+            <div className="absolute -top-6 -right-4 lg:-right-8 z-20">
+              <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex flex-col items-center justify-center shadow-xl shadow-orange-500/30 rotate-12 hover:rotate-0 transition-transform duration-300">
+                <Star className="w-8 h-8 text-white" fill="currentColor" />
+                <span className="text-xs font-bold text-white mt-0.5">TOP</span>
+              </div>
             </div>
 
-            <div className="absolute -bottom-4 -left-4 w-20 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg -rotate-6">
-              <span className="text-white font-bold text-sm">98%</span>
-            </div>
+            
+
+            {/* Decorative Elements */}
+            <div className="absolute top-1/4 -right-12 w-24 h-24 bg-purple-100/50 rounded-full blur-2xl" />
+            <div className="absolute bottom-1/4 -left-12 w-32 h-32 bg-blue-100/50 rounded-full blur-2xl" />
           </div>
-        </div>
-
-        {/* Features Row */}
-        <div className="mt-24 grid md:grid-cols-3 gap-8">
-          {[
-            {
-              icon: (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              ),
-              title: 'Instant Feedback',
-              description: 'Get immediate explanations and learn from mistakes in real-time.'
-            },
-            {
-              icon: (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              ),
-              title: 'Progress Tracking',
-              description: 'Monitor your improvement with detailed analytics and insights.'
-            },
-            {
-              icon: (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              ),
-              title: 'Expert Content',
-              description: 'Access curated quizzes created by subject matter experts.'
-            }
-          ].map((feature, index) => (
-            <div key={index} className="text-center space-y-4">
-              <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mx-auto">
-                {feature.icon}
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 // components/Header.tsx
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Brain, Plus, GraduationCap, LogIn } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 import { UserData } from "./Home";
 
@@ -24,37 +25,42 @@ export default function Header({ userData, onLogout }: HeaderProps) {
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300 ${
       scrolled 
-        ? 'bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm' 
-        : 'bg-white'
+        ? 'bg-white/80 backdrop-blur-xl border-b border-gray-200/60 shadow-sm shadow-gray-100/50' 
+        : 'bg-white/95 backdrop-blur-sm'
     }`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-18 py-3">
           
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/30 transition-shadow duration-300">
+                <Brain className="w-5 h-5 text-white" />
+              </div>
+              {/* Subtle glow on hover */}
+              <div className="absolute inset-0 w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-300" />
             </div>
-            <div className="font-bold text-xl text-gray-900 group-hover:text-purple-600 transition-colors">
-              Quizin'
+            <div className="flex flex-col">
+              <span className="font-bold text-xl text-gray-900 group-hover:text-purple-600 transition-colors duration-200">
+                Quizin'
+              </span>
+              <span className="text-[10px] text-gray-400 font-medium -mt-1 hidden sm:block">
+                Learn Smarter
+              </span>
             </div>
           </Link>
 
           {/* Navigation */}
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-3">
             {userData ? (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 {/* Teacher Create Button */}
                 {userData.type === "teacher" && (
                   <Link
                     to="/create-quiz"
-                    className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors duration-200"
+                    className="group flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-medium rounded-xl shadow-md shadow-purple-500/20 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-200 hover:-translate-y-0.5"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
+                    <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-300" />
                     <span className="hidden sm:inline">Create Quiz</span>
                   </Link>
                 )}
@@ -63,21 +69,26 @@ export default function Header({ userData, onLogout }: HeaderProps) {
                 <UserDropdown userData={userData} onLogout={onLogout} />
               </div>
             ) : (
-              <div className="flex items-center gap-4">
-                {/* Tutor Link */}
+              <div className="flex items-center gap-2">
+                {/* Educator Link */}
                 <Link
                   to="/login?type=teacher"
-                  className="text-gray-600 hover:text-purple-600 font-medium transition-colors duration-200 px-3 py-2"
+                  className="group flex items-center gap-2 text-gray-600 hover:text-purple-600 font-medium transition-all duration-200 px-4 py-2.5 rounded-xl hover:bg-purple-50"
                 >
-                  For Educators
+                  <GraduationCap className="w-4 h-4 transition-transform group-hover:scale-110" />
+                  <span className="hidden sm:inline">For Educators</span>
                 </Link>
+                
+                {/* Divider */}
+                <div className="hidden sm:block w-px h-6 bg-gray-200" />
                 
                 {/* Sign In Button */}
                 <Link
                   to="/login?type=student"
-                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors duration-200"
+                  className="group flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-medium rounded-xl shadow-md shadow-purple-500/20 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-200 hover:-translate-y-0.5"
                 >
-                  Sign In
+                  <LogIn className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+                  <span>Sign In</span>
                 </Link>
               </div>
             )}

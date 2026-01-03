@@ -20,12 +20,10 @@ export default function QuizStatCard({ quiz, onViewDetails }: QuizStatCardProps)
     );
   }
 
-  // console.log('Rendering QuizStatCard with quiz:', quiz); // Debug log
-
   // Use API stats and calculate additional stats
   const apiStats = quiz.stats;
   const additionalStats = calculateAdditionalStats(quiz);
-  
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
       {/* Header */}
@@ -41,13 +39,13 @@ export default function QuizStatCard({ quiz, onViewDetails }: QuizStatCardProps)
               <div>
                 <h3 className="font-semibold text-gray-900 text-lg">{quiz.quizTitle}</h3>
                 <p className="text-sm text-gray-500">
-                  {apiStats.totalAttempts} attempt{apiStats.totalAttempts !== 1 ? 's' : ''} • 
+                  {apiStats.totalAttempts} attempt{apiStats.totalAttempts !== 1 ? 's' : ''} •
                   Last: {additionalStats.latestAttempt ? formatDate(additionalStats.latestAttempt) : 'Never'}
                 </p>
               </div>
             </div>
           </div>
-          
+
           <ScoreIndicator score={apiStats.highestScore} />
         </div>
       </div>
@@ -90,7 +88,7 @@ export default function QuizStatCard({ quiz, onViewDetails }: QuizStatCardProps)
             </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
+            <div
               className="bg-purple-600 h-2 rounded-full transition-all duration-500"
               style={{ width: `${Math.min(additionalStats.overallAccuracy, 100)}%` }}
             />
@@ -131,7 +129,7 @@ function StatItem({ label, value, icon, color }: StatItemProps) {
 }
 
 function calculateAdditionalStats(quiz: QuizAttempts) {
-  if (!quiz.attempts || quiz.attempts.length === 0) {
+  if (!quiz || !quiz.attempts || quiz.attempts.length === 0) {
     return {
       overallAccuracy: 0,
       totalCorrectAnswers: 0,
@@ -140,15 +138,17 @@ function calculateAdditionalStats(quiz: QuizAttempts) {
     };
   }
 
-  const totalCorrect = quiz.attempts.reduce((sum, attempt) => sum + attempt.score, 0);
-  const totalQuestions = quiz.attempts.reduce((sum, attempt) => sum + attempt.totalScore, 0);
-  
-  const latestAttemptDate = quiz.attempts.length > 0 
+  const totalCorrect = quiz.attempts.reduce((sum, attempt) => sum + (attempt.score || 0), 0);
+  const totalQuestions = quiz.attempts.reduce((sum, attempt) => sum + (attempt.totalScore || 0), 0);
+
+  const latestAttemptDate = quiz.attempts.length > 0
     ? new Date(quiz.attempts[quiz.attempts.length - 1].endTime)
     : null;
 
+  const overallAccuracy = totalQuestions > 0 ? (totalCorrect / totalQuestions) * 100 : 0;
+
   return {
-    overallAccuracy: totalQuestions > 0 ? (totalCorrect / totalQuestions) * 100 : 0,
+    overallAccuracy: isNaN(overallAccuracy) ? 0 : overallAccuracy,
     totalCorrectAnswers: totalCorrect,
     totalQuestions,
     latestAttempt: latestAttemptDate

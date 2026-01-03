@@ -9,24 +9,6 @@ import { useQuizData } from "../../hooks/useQuizData";
 import { useDocumentMeta } from "../../hooks/useDocumentMeta";
 import { useToken } from "../../contexts/useToken";
 
-// interface Quiz {
-//   _id: string;
-//   id: number;
-//   title: string;
-//   tags: string[];
-//   difficulty: string;
-//   questionCount: number;
-//   questions: {
-//     id: number;
-//     question: string;
-//     options: string[];
-//     answer: string;
-//   }[];
-//   createdBy: {
-//     name?: string;
-//   };
-// }
-
 export interface UserData {
   name: string;
   email: string;

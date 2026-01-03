@@ -1,4 +1,3 @@
-// components/dashboard/TabNavigation.tsx
 interface TabNavigationProps {
   activeTab: string;
   onTabChange: (tab: string) => void;

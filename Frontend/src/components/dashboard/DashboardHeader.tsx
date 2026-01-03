@@ -1,4 +1,3 @@
-// components/dashboard/DashboardHeader.tsx
 import { useAuth } from '../../hooks/useAuth';
 
 export default function DashboardHeader() {

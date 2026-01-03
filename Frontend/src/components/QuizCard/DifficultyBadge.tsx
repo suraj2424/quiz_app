@@ -1,55 +1,52 @@
-// components/QuizCard/DifficultyBadge.tsx (Enhanced Version)
+// components/QuizCard/DifficultyBadge.tsx
+import { CheckCircle, Clock, AlertTriangle, HelpCircle } from "lucide-react";
+
 interface DifficultyBadgeProps {
   difficulty: string;
   showIcon?: boolean;
+  size?: "sm" | "md";
 }
 
-export default function DifficultyBadge({ difficulty, showIcon = false }: DifficultyBadgeProps) {
+export default function DifficultyBadge({ 
+  difficulty, 
+  showIcon = false,
+  size = "sm" 
+}: DifficultyBadgeProps) {
   const getDifficultyConfig = (level: string) => {
-    const baseStyles = "px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap border transition-all duration-200 hover:scale-105";
+    const sizeStyles = size === "sm" 
+      ? "px-2.5 py-1 text-xs gap-1" 
+      : "px-3 py-1.5 text-sm gap-1.5";
+    
+    const iconSize = size === "sm" ? "w-3 h-3" : "w-3.5 h-3.5";
+    
+    const baseStyles = `inline-flex items-center rounded-full font-medium whitespace-nowrap border transition-all duration-200 hover:scale-105 ${sizeStyles}`;
     
     switch (level.toUpperCase()) {
       case "EASY":
       case "BEGINNER":
         return {
-          className: `${baseStyles} bg-gradient-to-r from-emerald-500/20 to-emerald-500/10 text-emerald-700 border-emerald-500/20 hover:from-emerald-500/30 hover:to-emerald-500/20`,
-          icon: (
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-          ),
+          className: `${baseStyles} bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-700 border-emerald-200/60 hover:border-emerald-300 hover:shadow-sm hover:shadow-emerald-100`,
+          icon: <CheckCircle className={iconSize} />,
           text: "Beginner"
         };
       case "MEDIUM":
       case "INTERMEDIATE":
         return {
-          className: `${baseStyles} bg-gradient-to-r from-amber-500/20 to-amber-500/10 text-amber-700 border-amber-500/20 hover:from-amber-500/30 hover:to-amber-500/20`,
-          icon: (
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-            </svg>
-          ),
+          className: `${baseStyles} bg-gradient-to-r from-amber-50 to-yellow-50 text-amber-700 border-amber-200/60 hover:border-amber-300 hover:shadow-sm hover:shadow-amber-100`,
+          icon: <Clock className={iconSize} />,
           text: "Intermediate"
         };
       case "HARD":
       case "ADVANCED":
         return {
-          className: `${baseStyles} bg-gradient-to-r from-rose-500/20 to-rose-500/10 text-rose-700 border-rose-500/20 hover:from-rose-500/30 hover:to-rose-500/20`,
-          icon: (
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-          ),
+          className: `${baseStyles} bg-gradient-to-r from-rose-50 to-red-50 text-rose-700 border-rose-200/60 hover:border-rose-300 hover:shadow-sm hover:shadow-rose-100`,
+          icon: <AlertTriangle className={iconSize} />,
           text: "Advanced"
         };
       default:
         return {
-          className: `${baseStyles} bg-gradient-to-r from-gray-500/20 to-gray-500/10 text-gray-700 border-gray-500/20 hover:from-gray-500/30 hover:to-gray-500/20`,
-          icon: (
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-            </svg>
-          ),
+          className: `${baseStyles} bg-gradient-to-r from-gray-50 to-slate-50 text-gray-700 border-gray-200/60 hover:border-gray-300 hover:shadow-sm hover:shadow-gray-100`,
+          icon: <HelpCircle className={iconSize} />,
           text: difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase()
         };
     }
@@ -59,10 +56,8 @@ export default function DifficultyBadge({ difficulty, showIcon = false }: Diffic
 
   return (
     <span className={config.className}>
-      <span className="flex items-center gap-1">
-        {showIcon && config.icon}
-        {config.text}
-      </span>
+      {showIcon && config.icon}
+      <span>{config.text}</span>
     </span>
   );
 }

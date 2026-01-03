@@ -1,5 +1,14 @@
 // components/QuizzesSection.tsx
 import { useState, useMemo } from "react";
+import { 
+  Search, 
+  SlidersHorizontal, 
+  AlertCircle, 
+  BookOpen,
+  ArrowRight,
+  Loader2,
+  FolderOpen
+} from "lucide-react";
 import QuizCard from "../QuizCard/QuizCard";
 
 interface Quiz {
@@ -53,12 +62,12 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
 
   if (error) {
     return (
-      <section id="quizzes-section" className="py-20 bg-gray-50">
+      <section id="quizzes-section" className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12">
-            <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12 max-w-lg mx-auto">
+            <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <AlertCircle className="w-8 h-8 text-red-500" />
+            </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Failed to load quizzes</h3>
             <p className="text-gray-600">{error}</p>
           </div>
@@ -68,11 +77,18 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
   }
 
   return (
-    <section id="quizzes-section" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section id="quizzes-section" className="py-20 bg-gradient-to-b from-gray-50 to-white relative">
+      {/* Subtle background decoration */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(168,85,247,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
+      
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100/60 rounded-full mb-6">
+            <BookOpen className="w-4 h-4 text-purple-600" />
+            <span className="text-sm font-medium text-purple-700">Quiz Library</span>
+          </div>
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
             Explore Our Quiz Collection
           </h2>
@@ -83,8 +99,13 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-12">
-          <div className="grid md:grid-cols-4 gap-4">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 lg:p-8 mb-12">
+          <div className="flex items-center gap-2 mb-6">
+            <SlidersHorizontal className="w-5 h-5 text-purple-600" />
+            <span className="font-semibold text-gray-900">Filter Quizzes</span>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-6">
             
             {/* Search */}
             <div className="md:col-span-2">
@@ -92,10 +113,8 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
                 Search Quizzes
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   id="search"
@@ -103,7 +122,7 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
                   placeholder="Search by title or topic..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                  className="block w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-all duration-200"
                 />
               </div>
             </div>
@@ -117,7 +136,7 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
                 id="difficulty"
                 value={selectedDifficulty}
                 onChange={(e) => setSelectedDifficulty(e.target.value)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-all duration-200 appearance-none cursor-pointer"
               >
                 {difficulties.map(difficulty => (
                   <option key={difficulty} value={difficulty}>
@@ -136,7 +155,7 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
                 id="category"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-all duration-200 appearance-none cursor-pointer"
               >
                 <option value="all">All Categories</option>
                 {categories.map(category => (
@@ -149,14 +168,33 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
           </div>
 
           {/* Results Count */}
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-6 pt-6 border-t border-gray-100 flex items-center justify-between">
             <p className="text-sm text-gray-600">
               {isLoading ? (
-                "Loading quizzes..."
+                <span className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Loading quizzes...
+                </span>
               ) : (
-                `Showing ${filteredQuizzes.length} of ${quizzes.length} quizzes`
+                <span>
+                  Showing <span className="font-semibold text-gray-900">{filteredQuizzes.length}</span> of{" "}
+                  <span className="font-semibold text-gray-900">{quizzes.length}</span> quizzes
+                </span>
               )}
             </p>
+            
+            {(searchTerm || selectedDifficulty !== "all" || selectedCategory !== "all") && (
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedDifficulty("all");
+                  setSelectedCategory("all");
+                }}
+                className="text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors"
+              >
+                Clear filters
+              </button>
+            )}
           </div>
         </div>
 
@@ -164,20 +202,20 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
         {isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, index) => (
-              <div key={index} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gray-200 rounded-xl"></div>
+              <div key={index} className="bg-white rounded-2xl border border-gray-100 p-6 animate-pulse shadow-sm">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-gray-200 rounded-2xl" />
                   <div className="flex-1">
-                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                    <div className="h-4 bg-gray-200 rounded-lg mb-2 w-3/4" />
+                    <div className="h-3 bg-gray-200 rounded-lg w-1/2" />
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <div className="h-4 bg-gray-200 rounded"></div>
-                  <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-                  <div className="flex gap-2">
-                    <div className="h-6 bg-gray-200 rounded-full w-16"></div>
-                    <div className="h-6 bg-gray-200 rounded-full w-20"></div>
+                  <div className="h-4 bg-gray-200 rounded-lg" />
+                  <div className="h-4 bg-gray-200 rounded-lg w-5/6" />
+                  <div className="flex gap-2 pt-2">
+                    <div className="h-7 bg-gray-200 rounded-full w-20" />
+                    <div className="h-7 bg-gray-200 rounded-full w-24" />
                   </div>
                 </div>
               </div>
@@ -196,23 +234,32 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
               </div>
             ) : (
               /* Empty State */
-              /* Loading State */
-<div className="text-center py-16" role="status" aria-live="polite">
-  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 max-w-md mx-auto">
-    {/* Spinner */}
-    <div className="w-16 h-16 rounded-full border-4 border-purple-200 border-t-purple-600 animate-spin mx-auto mb-4" />
-    
-    <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading quizzes...</h3>
-    <p className="text-gray-600">
-      Fetching the latest quizzes. Please wait.
-    </p>
-  </div>
-</div>
+              <div className="text-center py-16">
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12 max-w-md mx-auto">
+                  <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <FolderOpen className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">No quizzes found</h3>
+                  <p className="text-gray-600 mb-6">
+                    Try adjusting your search or filters to find what you're looking for.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchTerm("");
+                      setSelectedDifficulty("all");
+                      setSelectedCategory("all");
+                    }}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition-colors"
+                  >
+                    Clear all filters
+                  </button>
+                </div>
+              </div>
             )}
           </>
         )}
 
-        {/* Browse All Link */}
+        {/* View All Button */}
         {!isLoading && filteredQuizzes.length > 0 && filteredQuizzes.length < quizzes.length && (
           <div className="text-center mt-12">
             <button
@@ -221,12 +268,10 @@ export default function QuizzesSection({ quizzes, isLoading, error }: QuizzesSec
                 setSelectedDifficulty("all");
                 setSelectedCategory("all");
               }}
-              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white font-semibold rounded-lg transition-colors duration-200"
+              className="group inline-flex items-center gap-2 px-6 py-3 border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white font-semibold rounded-xl transition-all duration-200"
             >
               View All Quizzes
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
         )}

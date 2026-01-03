@@ -1,4 +1,6 @@
 // components/QuizCard/ErrorAlert.tsx
+import { AlertCircle, X } from "lucide-react";
+
 interface ErrorAlertProps {
   error: string | null;
   onClose: () => void;
@@ -9,22 +11,28 @@ export default function ErrorAlert({ error, onClose, isVisible }: ErrorAlertProp
   if (!isVisible || !error) return null;
 
   return (
-    <div className="mx-6 mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-      <div className="flex items-start justify-between">
+    <div className="mx-6 mb-6 p-4 bg-gradient-to-r from-red-50 to-rose-50 border border-red-200/60 rounded-xl shadow-sm">
+      <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
-          <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="text-sm text-red-700">{error}</span>
+          {/* Error Icon */}
+          <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <AlertCircle className="w-4 h-4 text-red-600" />
+          </div>
+          
+          {/* Error Content */}
+          <div className="pt-1">
+            <p className="text-xs font-medium text-red-800 mb-0.5">Error</p>
+            <p className="text-sm text-red-700">{error}</p>
+          </div>
         </div>
+        
+        {/* Close Button */}
         <button
           onClick={onClose}
-          className="text-red-400 hover:text-red-600 transition-colors duration-200 ml-3"
-          aria-label="Close error"
+          className="w-7 h-7 flex items-center justify-center rounded-lg text-red-400 hover:text-red-600 hover:bg-red-100 transition-all duration-200 flex-shrink-0"
+          aria-label="Dismiss error"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <X className="w-4 h-4" />
         </button>
       </div>
     </div>

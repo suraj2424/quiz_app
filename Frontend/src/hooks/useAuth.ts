@@ -7,6 +7,7 @@ interface UserData {
   email: string;
   id: string;
   type: string;
+  avatar?: string;
 }
 
 interface UseAuthReturn {
