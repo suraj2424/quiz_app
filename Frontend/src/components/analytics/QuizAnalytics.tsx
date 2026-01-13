@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Line, Doughnut } from 'react-chartjs-2';
 import { motion } from 'framer-motion';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { QuizAttempts } from '../pages/Dashboard';
+import { QuizAttempts } from '../dashboard/types';
 
 // Register ChartJS components
 ChartJS.register(

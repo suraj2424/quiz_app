@@ -70,7 +70,7 @@ router.post("/", authenticate, async (req, res) => {
 router.get('/user/quizzes', authenticate, async (req, res) => {
   try {
     const attempts = await Attempt.find({ user: req.user.id })
-      .populate('quiz', 'title')
+      .populate('quiz', 'title difficulty')
       .sort({ endTime: -1 });
 
     // Group attempts by quiz
@@ -81,6 +81,7 @@ router.get('/user/quizzes', authenticate, async (req, res) => {
         acc[quizId] = {
           quizId,
           quizTitle: attempt.quiz.title,
+          quiz: attempt.quiz,
           attempts: [],
           stats: {
             totalAttempts: 0,

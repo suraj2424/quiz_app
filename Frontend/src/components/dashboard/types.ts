@@ -24,6 +24,7 @@ export interface Attempt {
 export interface QuizAttempts {
   quizId: string;
   quizTitle: string;
+  quiz: Quiz;
   attempts: Attempt[];
   stats: {
     totalAttempts: number;
