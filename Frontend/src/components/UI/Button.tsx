@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 interface ButtonProps {
   children: ReactNode;
   onClick?: () => void;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
   className?: string;
@@ -13,30 +13,29 @@ export default function Button({
   children, 
   onClick, 
   variant = 'primary', 
-  size = 'md',
   disabled = false,
   className = ''
 }: ButtonProps) {
-  const baseStyles = 'font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-2';
-  
   const variants = {
-    primary: 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-600/25 disabled:opacity-50',
-    secondary: 'bg-gray-100 hover:bg-gray-200 text-gray-700 disabled:opacity-50',
-    outline: 'border-2 border-gray-300 hover:border-gray-400 text-gray-700 disabled:opacity-50',
-    ghost: 'text-gray-700 hover:bg-gray-50 disabled:opacity-50'
-  };
-
-  const sizes = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg'
+    primary: 'bg-teal-400 hover:bg-teal-300',
+    secondary: 'bg-rose-500 text-white hover:bg-rose-400',
+    outline: 'bg-white hover:bg-gray-50',
+    ghost: 'bg-amber-400 hover:bg-amber-300'
   };
 
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`
+        ${variants[variant]}
+        border-4 border-black px-8 py-3 font-black uppercase italic tracking-wider
+        shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
+        active:translate-x-[4px] active:translate-y-[4px] active:shadow-none
+        disabled:opacity-50 disabled:cursor-not-allowed
+        transition-all duration-75
+        ${className}
+      `}
     >
       {children}
     </button>

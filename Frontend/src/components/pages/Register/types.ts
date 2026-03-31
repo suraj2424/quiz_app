@@ -32,6 +32,6 @@ export interface RegisterFormProps {
   loading: boolean;
   showPassword: boolean;
   setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void | Promise<void>;
   type: string;
 }

@@ -1,60 +1,33 @@
-// components/FeatureCard.tsx
-import FeatureIcon from "./FeatureIcon";
-
-interface Feature {
-  icon: string;
-  title: string;
-  description: string;
-  stats: string;
-}
-
-interface FeatureCardProps {
-  feature: Feature;
-  index: number;
-}
-
-export default function FeatureCard({ feature, index }: FeatureCardProps) {
+export default function FeatureCard({ feature }: any) {
   return (
     <div className="group relative">
-      {/* Card */}
-      <div className="h-full p-8 bg-white border border-gray-200 rounded-2xl hover:border-purple-300 hover:shadow-lg transition-all duration-300">
+      {/* Background Shadow Layer - Teal glow in dark mode */}
+      <div className="absolute inset-0 bg-black dark:bg-teal-500/50 translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
+      
+      {/* Content Layer */}
+      <div className="relative bg-white dark:bg-[#1a1a2e] border-[4px] border-black p-8 h-full flex flex-col transition-all">
+        {/* Icon Box - Keeps its unique color but gets a white shadow in dark mode */}
+        <div className={`w-16 h-16 ${feature.color} border-[3px] border-black flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]`}>
+          <div className="text-black">
+            {feature.icon}
+          </div>
+        </div>
+
+        <h3 className="text-2xl font-black uppercase mb-4 tracking-tighter text-black dark:text-white">
+          {feature.title}
+        </h3>
         
-        {/* Icon */}
-        <div className="mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-            <FeatureIcon type={feature.icon} className="w-8 h-8 text-purple-600" />
-          </div>
-        </div>
+        <p className="text-gray-600 dark:text-gray-400 font-bold leading-tight mb-6 flex-1">
+          {feature.description}
+        </p>
 
-        {/* Content */}
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-gray-900 group-hover:text-purple-600 transition-colors duration-300">
-            {feature.title}
-          </h3>
-          
-          <p className="text-gray-600 leading-relaxed">
-            {feature.description}
-          </p>
-
-          {/* Stats Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
-            <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        {/* Stats Badge */}
+        <div className="mt-auto inline-flex items-center gap-2 bg-gray-100 dark:bg-black border-[2px] border-black px-3 py-1 self-start">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse border-[1px] border-black" />
+          <span className="text-[10px] font-black uppercase tracking-widest text-black dark:text-teal-400">
             {feature.stats}
-          </div>
+          </span>
         </div>
-
-        {/* Hover Effect Border */}
-        <div className="absolute inset-0 border-2 border-transparent bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" 
-             style={{ padding: '2px' }}>
-          <div className="h-full w-full bg-white rounded-2xl" />
-        </div>
-      </div>
-
-      {/* Number Badge */}
-      <div className="absolute -top-3 -left-3 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
-        {index + 1}
       </div>
     </div>
   );

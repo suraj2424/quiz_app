@@ -1,5 +1,5 @@
 import { Quiz } from '../../utils/quizTypes';
-import InfoCard from './InfoCard';
+// import InfoCard from './InfoCard';
 import Button from '../UI/Button';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,121 +10,75 @@ interface QuizWelcomeProps {
 
 export default function QuizWelcome({ quiz, onStartQuiz }: QuizWelcomeProps) {
   const navigate = useNavigate();
+
   return (
-    <section className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 relative">
-      {/* Background pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(168,85,247,0.02)_25%,rgba(168,85,247,0.02)_50%,transparent_50%,transparent_75%,rgba(168,85,247,0.02)_75%)] bg-[length:60px_60px]" />
-      
-      <div className="relative max-w-4xl mx-auto px-6 py-20">
-        {/* Back button */}
-        <div className="mb-4">
-          <button
-            type="button"
-            onClick={() => navigate('/')}
-            className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
-            aria-label="Back to Home"
-          >
-            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-            </svg>
-            Back to Home
-          </button>
-        </div>
-        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-purple-100 p-8 space-y-8">
-          
-          {/* Header */}
-          <div className="text-center space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 border border-purple-200 rounded-full text-purple-700 text-sm font-medium">
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-              Quiz Ready
+    <section className="min-h-screen bg-teal-50 p-6 md:p-12 font-sans selection:bg-rose-400">
+      <div className="max-w-4xl mx-auto">
+        {/* Navigation */}
+        <button
+          onClick={() => navigate('/')}
+          className="mb-8 border-4 border-black bg-white px-4 py-2 font-black uppercase italic shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all"
+        >
+          ← Back to Terminal
+        </button>
+
+        <div className="bg-white border-4 border-black p-8 md:p-12 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
+          {/* Header Section */}
+          <div className="mb-10">
+            <div className="inline-block bg-rose-500 text-white border-2 border-black px-4 py-1 font-black uppercase text-xs tracking-widest mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              Module: {quiz.difficulty}
             </div>
-            
-            <h1 className="text-3xl lg:text-5xl font-bold text-gray-900 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-black uppercase italic leading-none mb-6">
               {quiz.title}
             </h1>
-            
-            <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-xl font-bold border-l-8 border-black pl-6 py-2 bg-amber-50">
               {quiz.description}
             </p>
           </div>
 
-          {/* Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <InfoCard
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              }
-              label="Difficulty"
-              value={quiz.difficulty}
-              theme={
-                quiz.difficulty === "EASY" ? "success" :
-                quiz.difficulty === "MEDIUM" ? "warning" : "danger"
-              }
-            />
-
-            <InfoCard
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              }
-              label="Time Limit"
-              value={`${quiz.timeLimit / 60} minutes`}
-              theme="primary"
-            />
-
-            <InfoCard
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              }
-              label="Questions"
-              value={quiz.noOfQuestions.toString()}
-              theme="secondary"
-            />
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <StatBox label="Time Limit" value={`${quiz.timeLimit / 60} MINS`} color="bg-teal-400" />
+            <StatBox label="Questions" value={quiz.noOfQuestions} color="bg-amber-400" />
+            <StatBox label="Status" value="Verified" color="bg-white" />
           </div>
 
-          {/* Instructions */}
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Quiz Instructions:</h3>
-            <ul className="space-y-2 text-gray-600">
-              <li className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                Read each question carefully before selecting your answer
+          {/* Protocol Checklist */}
+          <div className="border-4 border-black bg-white p-6 mb-10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="text-xl font-black uppercase mb-4 italic underline decoration-rose-500 decoration-4">
+              Execution Protocol:
+            </h3>
+            <ul className="space-y-3 font-bold text-lg">
+              <li className="flex gap-3">
+                <span className="text-rose-500">▶</span> Timer is final; no manual overrides.
               </li>
-              <li className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                You can navigate between questions using the sidebar
+              <li className="flex gap-3">
+                <span className="text-rose-500">▶</span> Browser refreshes may invalidate session.
               </li>
-              <li className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                Use hints wisely - they're limited per question
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                Submit your quiz before time runs out
+              <li className="flex gap-3">
+                <span className="text-rose-500">▶</span> Submit before the countdown hits 00:00.
               </li>
             </ul>
           </div>
 
-          {/* Start Button */}
-          <div className="text-center pt-4">
-            <Button 
-              size="lg" 
-              onClick={onStartQuiz}
-              className="transform hover:scale-105"
-            >
-              Start Quiz
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Button>
-          </div>
+          <Button 
+            variant="primary" 
+            onClick={onStartQuiz}
+            className="w-full text-2xl py-6"
+          >
+            Initialize Session
+          </Button>
         </div>
       </div>
     </section>
+  );
+}
+
+function StatBox({ label, value, color }: { label: string, value: any, color: string }) {
+  return (
+    <div className={`${color} border-4 border-black p-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`}>
+      <p className="text-xs font-black uppercase opacity-60 mb-1">{label}</p>
+      <p className="text-2xl font-black uppercase italic">{value}</p>
+    </div>
   );
 }

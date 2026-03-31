@@ -1,5 +1,4 @@
-// components/UI/Modal.tsx
-import { useEffect } from "react";
+import { X } from "lucide-react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -8,46 +7,21 @@ interface ModalProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-export default function Modal({ isOpen, onClose, children, size = 'md' }: ModalProps) {
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen, onClose]);
-
+// Modal logic inside AuthDialog or UI/Modal
+export default function Modal({ isOpen, onClose, children }: ModalProps) {
   if (!isOpen) return null;
 
-  const sizeClasses = {
-    sm: 'max-w-md',
-    md: 'max-w-lg',
-    lg: 'max-w-2xl'
-  };
-
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 p-4 overflow-y-auto flex items-start md:items-center justify-center">
-      <div 
-        className={`bg-white rounded-xl shadow-xl w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto transform transition-all duration-200`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="relative">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors duration-200 z-10"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-teal-500/20 backdrop-blur-[2px]" onClick={onClose} />
+      <div className="relative bg-white border-[4px] border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] w-full max-w-md animate-in zoom-in-95 duration-200">
+        <button 
+          onClick={onClose} 
+          className="absolute -top-4 -right-4 bg-rose-500 text-white border-[3px] border-black p-2 hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        <div className="p-8">
           {children}
         </div>
       </div>

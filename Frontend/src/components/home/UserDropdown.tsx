@@ -1,130 +1,83 @@
 // components/UserDropdown.tsx
 import { useState, useRef, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { FaUserLarge } from "react-icons/fa6";
-import { MdLeaderboard } from "react-icons/md";
-import { IoExitOutline, IoAdd, IoChevronDown } from "react-icons/io5";
-import { UserData } from "./Home"; // Adjust the import path as necessary
-import { FaHistory } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import { User, History, LayoutDashboard, LogOut, ChevronDown } from "lucide-react";
+import { useUser } from "../../contexts/UserContext";
 
-interface UserDropdownProps {
-  userData: UserData;
-  onLogout: () => void;
-}
-
-export default function UserDropdown({ userData, onLogout }: UserDropdownProps) {
+export default function UserDropdown() {
+  const { user, logout } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
+  console.log('UserDropdown - user:', user);
+  console.log('UserDropdown - user type:', typeof user);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+  useEffect(() => {
+    const close = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setIsOpen(false);
+    };
+    document.addEventListener('mousedown', close);
+    return () => document.removeEventListener('mousedown', close);
   }, []);
 
+  // If no valid user object, don't render
+  if (!user || typeof user !== 'object') {
+    return null;
+  }
+
+  // Get display name with fallbacks
+  const displayName = user.name || user.full_name || user.email?.split('@')[0] || 'User';
+  const userInitial = displayName.charAt(0).toUpperCase();
+  const userEmail = user.email || 'No email';
+  const userId = user.id || 'user';
+
   return (
-    <div className="flex items-center gap-6">
-      {userData.type === "teacher" && (
-        <Link 
-          to="/create-quiz" 
-          className="flex items-center gap-2 px-4 py-2 rounded-full 
-                    bg-gradient-to-r from-indigo-500 to-purple-500 text-white
-                    hover:from-indigo-600 hover:to-purple-600 
-                    transition-all duration-200 shadow-md shadow-purple-500/20"
-        >
-          <IoAdd className="w-5 h-5" />
-          <span>Create Quiz</span>
-        </Link>
-      )}
-
-      <div className="relative" ref={dropdownRef}>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-3 px-4 py-2 rounded-full
-                    hover:bg-gray-100 transition-all duration-200"
-        >
-          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 
-                         flex items-center justify-center text-white font-medium">
-            {userData.name[0].toUpperCase()}
-          </div>
-          <span className="text-gray-700">{userData.name}</span>
-          <IoChevronDown 
-            className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
-              isOpen ? 'rotate-180' : 'rotate-0'
-            }`} 
-          />
-        </button>
-
-        <div className={`absolute right-0 mt-2 w-64 rounded-2xl bg-white shadow-xl 
-                        border border-gray-100 py-2 z-50 transition-all duration-200 origin-top-right
-                        ${isOpen 
-                          ? 'opacity-100 visible scale-100' 
-                          : 'opacity-0 invisible scale-95'
-                        }`}>
-          <div className="px-4 py-3 border-b border-gray-100">
-            <p className="text-sm text-gray-500">Signed in as</p>
-            <p className="text-sm font-medium text-gray-900">{userData.email}</p>
-          </div>
-
-          <div className="py-2">
-            <NavLink 
-              to={`/profile/${userData.id}`} 
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors w-full
-                ${isActive 
-                  ? 'text-purple-600 bg-purple-50' 
-                  : 'text-gray-700 hover:bg-gray-50'
-                }`
-              }
-            >
-              <FaUserLarge className="w-4 h-4" />
-              Profile
-            </NavLink>
-            <NavLink 
-              to={`/history/${userData.id}`} 
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors w-full
-                ${isActive 
-                  ? 'text-purple-600 bg-purple-50' 
-                  : 'text-gray-700 hover:bg-gray-50'
-                }`
-              }
-            >
-              <FaHistory className="w-4 h-4" />
-              History
-            </NavLink>
-            <NavLink 
-              to={`/dashboard/${userData.id}`} 
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors w-full
-                ${isActive 
-                  ? 'text-purple-600 bg-purple-50' 
-                  : 'text-gray-700 hover:bg-gray-50'
-                }`
-              }
-            >
-              <MdLeaderboard className="w-4 h-4" />
-              Dashboard
-            </NavLink>
-          </div>
-
-          <div className="border-t border-gray-100 pt-2">
-            <button 
-              onClick={onLogout} 
-              className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 
-                        hover:bg-red-50 transition-colors w-full text-left"
-            >
-              <IoExitOutline className="w-4 h-4" />
-              Sign Out
-            </button>
-          </div>
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-3 p-1 pr-3 bg-white dark:bg-[#1A0B2E] border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
+      >
+        <div className="w-9 h-9 bg-teal-500 border-r-[3px] border-black flex items-center justify-center text-white font-black uppercase">
+          {userInitial}
         </div>
-      </div>
+        <span className="font-black uppercase text-xs dark:text-white hidden sm:block">{displayName}</span>
+        <ChevronDown className={`w-4 h-4 dark:text-white transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 mt-3 w-60 bg-white dark:bg-[#1A0B2E] border-[3px] border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] z-50">
+          <div className="px-4 py-3 border-b-[3px] border-black dark:border-white bg-amber-100 dark:bg-amber-900/40">
+            <p className="text-[10px] font-black uppercase text-amber-700 dark:text-amber-400">Logged in as</p>
+            <p className="text-xs font-bold truncate text-black dark:text-white">{userEmail}</p>
+          </div>
+
+          <div className="flex flex-col">
+            {[
+              { to: `/profile/${userId}`, icon: User, label: 'Profile' },
+              { to: `/history/${userId}`, icon: History, label: 'History' },
+              { to: `/dashboard/${userId}`, icon: LayoutDashboard, label: 'Dashboard' }
+            ].map((link) => (
+              <NavLink 
+                key={link.to}
+                to={link.to} 
+                className={({ isActive }) => `
+                  flex items-center gap-3 px-4 py-3 text-xs font-black uppercase italic transition-all
+                  ${isActive ? 'bg-teal-500 text-white' : 'text-black dark:text-white hover:bg-teal-50 dark:hover:bg-white/5'}
+                `}
+              >
+                <link.icon className="w-4 h-4" /> {link.label}
+              </NavLink>
+            ))}
+          </div>
+
+          <button 
+            onClick={logout}
+            className="w-full flex items-center gap-3 px-4 py-3 text-xs font-black uppercase italic text-rose-600 border-t-[3px] border-black dark:border-white hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-all"
+          >
+            <LogOut className="w-4 h-4" /> Sign Out
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,16 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Cookies } from 'react-cookie';
-
-interface User {
-  user: {
-    name: string;
-    email: string;
-  }
-}
+import { useUser } from '../contexts/UserContext';
 
 const WatermarkBackground = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const cookies = new Cookies();
+  const { user } = useUser();
 
   useEffect(() => {
     const verifyToken = async () => {

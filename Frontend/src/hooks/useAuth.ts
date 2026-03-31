@@ -1,6 +1,6 @@
 // hooks/useAuth.ts
 import { useState, useEffect, useContext } from 'react';
-import { TokenContext } from '../contexts/TokenContextProvider';
+import { useUser } from '../contexts/UserContext';
 
 interface UserData {
   name: string;
@@ -13,7 +13,7 @@ interface UserData {
 interface UseAuthReturn {
   userData: UserData | null;
   token: string | null;
-  removeToken: () => void;
+  logout: () => void;
   isLoading: boolean;
   error: string | null;
 }
@@ -23,8 +23,7 @@ export const useAuth = (): UseAuthReturn => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  const { token, removeToken } = useContext(TokenContext);
-
+  const { token, user, logout } = useUser();
   useEffect(() => {
     const verifyToken = async () => {
       if (!token) {
@@ -49,7 +48,7 @@ export const useAuth = (): UseAuthReturn => {
           setUserData(data.user);
         } else {
           setUserData(null);
-          removeToken();
+          logout();
           setError('Session expired. Please login again.');
         }
       } catch (err) {
@@ -62,12 +61,12 @@ export const useAuth = (): UseAuthReturn => {
     };
 
     verifyToken();
-  }, [token, removeToken]);
+  }, [token, logout]);
 
   return {
     userData,
     token,
-    removeToken,
+    logout,
     isLoading,
     error
   };

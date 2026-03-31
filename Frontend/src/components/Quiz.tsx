@@ -11,6 +11,7 @@ import { IoBarChartOutline } from "react-icons/io5";
 import WatermarkBackground from "./WatermarkBackground";
 import { Cookies } from "react-cookie";
 import { toast } from "react-toastify";
+import { useUser } from "../contexts/UserContext";
 
 interface Option {
   optionText: string;
@@ -54,11 +55,11 @@ interface AnsweredQuestion {
 }
 
 interface User {
-  user: {
-    name: string;
-    id: string;
-    email: string;
-  };
+  id: string;
+  name?: string;
+  full_name?: string;
+  email: string;
+  type: "student" | "teacher";
 }
 
 export default function Quiz() {
@@ -84,30 +85,10 @@ export default function Quiz() {
 
   const [startTime, setStartTime] = useState<Date>(new Date());
 
-  const [user, setUser] = useState<User | null>(null);
+  const { user, token } = useUser();
   const cookies = new Cookies();
 
-  useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        const token = cookies.get("token");
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-        const response = await fetch(`${backendUrl}/api/verify-token`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        }
-      } catch (error) {
-        console.error("Token verification failed:", error);
-      }
-    };
-
-    verifyToken();
-  }, []);
+  // No need for local token verification - UserContext handles it
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -276,7 +257,7 @@ export default function Quiz() {
   const submitQuiz = async () => {
     try {
       const token = cookies.get("token");
-      if (!token || !user?.user.id || !quizId) {
+      if (!token || !user?.id || !quizId) {
         toast.error("Authentication required");
         return;
       }
@@ -337,7 +318,7 @@ export default function Quiz() {
       // Construct attempt data matching backend schema
       const attemptData = {
         quiz: quizId,
-        user: user.user.id, // This will be overwritten by backend
+        user: user.id, // User ID from UserContext
         answers: formattedAnswers,
         score: finalScore,
         totalQuestions: quiz.questions.length,

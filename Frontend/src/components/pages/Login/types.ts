@@ -6,6 +6,12 @@ export interface User {
 
 export interface LoginResponse {
   token: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    type: "student" | "teacher";
+  };
   message?: string;
 }
 
