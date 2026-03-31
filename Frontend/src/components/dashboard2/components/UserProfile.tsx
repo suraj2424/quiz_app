@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { User, Settings, HelpCircle, LogOut, ChevronDown } from 'lucide-react';
 
 export default function UserProfile() {
-    const { userData, removeToken } = useAuth();
+    const { userData, logout } = useAuth();
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -37,7 +37,7 @@ export default function UserProfile() {
     };
 
     const handleLogout = () => {
-        removeToken();
+        logout();
         setIsOpen(false);
         navigate('/login');
     };

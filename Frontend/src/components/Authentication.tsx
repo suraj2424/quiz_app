@@ -1,32 +1,12 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { TokenContext } from "../contexts/TokenContextProvider";
-import { Cookies } from "react-cookie";
+import { useUser } from "../contexts/UserContext";
 import { toast } from "react-toastify";
-
-const cookieConfig = {
-  path: '/',
-  secure: true, // Only sent over HTTPS
-  sameSite: 'strict' as const, // Protect against CSRF
-  domain: window.location.hostname, // Only your domain
-  // Add maxAge if you want the cookie to expire after a specific time
-  // maxAge: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
-};
-
-const cookies = new Cookies();
-
-const getToken = (): string | null => {
-  return cookies.get('token') || null;
-};
-
-const removeToken = (): void => {
-  cookies.remove('token', cookieConfig);
-};
 
 
 export default function Authentication() {
-  const { setToken } = useContext(TokenContext);
+  const { login, logout, token } = useUser();
   const navigate = useNavigate();
   const [isRegister, setIsRegister] = useState(true);
   interface FormErrors {
@@ -46,8 +26,7 @@ export default function Authentication() {
   });
 
   useEffect(() => {
-    const tokenCookie = getToken();
-    if (tokenCookie) {
+    if (token) {
       setIsLoggedIn(true);
     }
 
@@ -56,10 +35,10 @@ export default function Authentication() {
     if (type) {
       setUser((prev) => ({ ...prev, type }));
     }
-  }, []);
+  }, [token]);
 
   const handleLogout = () => {
-    removeToken();
+    logout();
     setIsLoggedIn(false);
     navigate("/");
   };
@@ -119,9 +98,8 @@ export default function Authentication() {
           toast.success("Registration successful, you can now login");
           setUser({ full_name: "", email: "", password: "", type: "" });
         } else {
-          setToken(data.token);
+          login(data.token, null);
           toast.success("Login successful");
-          document.cookie = `token=${data.token}; path=/;`;
           setIsLoggedIn(true);
           navigate("/");
         }

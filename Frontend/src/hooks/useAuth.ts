@@ -1,5 +1,5 @@
 // hooks/useAuth.ts
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useUser } from '../contexts/UserContext';
 
 interface UserData {
@@ -19,55 +19,30 @@ interface UseAuthReturn {
 }
 
 export const useAuth = (): UseAuthReturn => {
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  const { token, user, logout } = useUser();
+  const { token, user, logout, refreshUser } = useUser();
+
   useEffect(() => {
-    const verifyToken = async () => {
-      if (!token) {
-        setIsLoading(false);
-        return;
-      }
+    if (token && !user) {
+      refreshUser();
+    }
+  }, [token, user, refreshUser]);
 
-      try {
-        setError(null);
-        const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-        
-        const response = await fetch(`${backendUrl}/api/verify-token`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setUserData(data.user);
-        } else {
-          setUserData(null);
-          logout();
-          setError('Session expired. Please login again.');
-        }
-      } catch (err) {
-        console.error("Error verifying token:", err);
-        setUserData(null);
-        setError('Failed to verify authentication.');
-      } finally {
-        setIsLoading(false);
-      }
+  const userData: UserData | null = useMemo(() => {
+    if (!user) return null;
+    return {
+      name: user.name || user.full_name || 'User',
+      email: user.email || '',
+      id: user.id || '',
+      type: user.type || 'student',
+      avatar: undefined,
     };
-
-    verifyToken();
-  }, [token, logout]);
+  }, [user]);
 
   return {
     userData,
     token,
     logout,
-    isLoading,
-    error
+    isLoading: !user && !!token,
+    error: null
   };
 };
